@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "ShaderManager.h"
+#include "ShadowlightEngine.h"
 
 // Define types of lumps
 // "LT_" stands for "lump type"

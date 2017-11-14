@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "Shader.h"
 #include "Program.h"
+#include "ShadowlightEngine.h"
 
 class ShaderManager
 {

@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "ShadowlightEngine.h"
 
 class OpenGLManager
 {

@@ -1,10 +1,12 @@
 #pragma once
 #include "stdafx.h"
+#include "LumpManager.h"
+#include "ShadowlightEngine.h"
 
 class LuaManager
 {
 private:
-	ShadowlightEngine *game;
+	ShadowlightEngine* game;
 
 	lua_State* L;
 	int scripts;
