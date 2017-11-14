@@ -1,6 +1,10 @@
 #pragma once
 #include "stdafx.h"
 
+class ShadowlightEngine;
+
+struct Lump;
+
 class LuaManager
 {
 private:

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ShaderManager.h"
-
+#include "ShadowlightEngine.h"
 
 
 ShaderManager::ShaderManager(ShadowlightEngine* gamePointer)

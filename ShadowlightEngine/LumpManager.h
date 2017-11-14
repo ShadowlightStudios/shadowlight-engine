@@ -73,7 +73,10 @@ private:
 	// Manager pointers
 	ShaderManager* shm;
 public:
+	void RegisterWithEngine(ShadowlightEngine* pEngine);
+
 	LumpManager(ShadowlightEngine*);
+	LumpManager();
 	void SetShaderManager(ShaderManager*);
 	void Cleanup();
 	void EnterLump(Lump*);

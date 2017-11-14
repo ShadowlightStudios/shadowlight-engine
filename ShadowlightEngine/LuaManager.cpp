@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "LuaManager.h"
+#include "ShadowlightEngine.h"
 
 LuaManager::LuaManager(ShadowlightEngine* gamePointer)
 {

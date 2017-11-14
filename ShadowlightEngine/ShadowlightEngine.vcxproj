@@ -128,8 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Batch.cpp" />
-    <ClCompile Include="BatchManager.cpp" />
     <ClCompile Include="errors.cpp" />
     <ClCompile Include="LuaManager.cpp" />
     <ClCompile Include="LumpManager.cpp" />
@@ -144,8 +142,6 @@
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Batch.h" />
-    <ClInclude Include="BatchManager.h" />
     <ClInclude Include="errors.h" />
     <ClInclude Include="lua.hpp" />
     <ClInclude Include="LuaManager.h" />

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "BatchManager.h"
 #include "LuaManager.h"
 #include "LumpManager.h"
 #include "OpenGLManager.h"
@@ -12,7 +11,7 @@ class ShadowlightEngine
 public:
 	ShadowlightEngine();
 	~ShadowlightEngine();
-	BatchManager *batchManager;
+
 	LuaManager *luaManager;
 	LumpManager *lumpManager;
 	OpenGLManager *openglManager;
