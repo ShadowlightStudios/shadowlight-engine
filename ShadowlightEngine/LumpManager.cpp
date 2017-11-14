@@ -1,6 +1,15 @@
 #include "stdafx.h"
 #include "LumpManager.h"
 
+void LumpManager::RegisterWithEngine(ShadowlightEngine * pEngine) //for use with/after default constructor initialization
+{
+	game = pEngine;
+
+	root = (LumpNode*)0;
+	shm = (ShaderManager*)0;
+	depth = 0;
+}
+
 // Just kinda sets everything up
 LumpManager::LumpManager(ShadowlightEngine* gamePointer)
 {
@@ -9,6 +18,10 @@ LumpManager::LumpManager(ShadowlightEngine* gamePointer)
 	root = (LumpNode*)0;
 	shm = (ShaderManager*)0;
 	depth = 0;
+}
+
+LumpManager::LumpManager()
+{
 }
 
 // Recursive function that prints the lump tree
