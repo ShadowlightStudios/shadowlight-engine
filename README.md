@@ -12,3 +12,7 @@ Alex Stolp
 Marcus Cramer
 
 Catastrophically Successful Software
+
+# Shadowlight Engine wiki:
+
+https://github.com/ShadowlightStudios/shadowlight-engine/wiki
