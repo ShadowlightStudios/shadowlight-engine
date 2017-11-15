@@ -47,10 +47,8 @@ struct Lump
 	bool loaded;
 	// The index into whatever asset list this fits into
 	int index;
-	// The file that the content is stored in
-	string contentDir;
-	// The index into the file that the content is stored in
-	uint16_t contentIndex;
+	// The JSON-formatted metadata
+	string metadata;
 };
 
 struct LumpNode

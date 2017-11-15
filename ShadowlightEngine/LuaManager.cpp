@@ -5,6 +5,9 @@ LuaManager::LuaManager(ShadowlightEngine* gamePointer)
 {
 	game = gamePointer;
 
+	// Start without loading any lumps
+	lumpLevel = -1;
+
 	// Initialize lua
 	L = lua_open();
 
@@ -37,6 +40,54 @@ void LuaManager::AddScript(const char* scriptName, const char* contents)
 
 	// Finally, pop the script table from the stack
 	lua_pop(L, 1);
+}
+
+// Begin a lump load
+void LuaManager::StartLumpLoad()
+{
+	// Cleanup the last load just in case ;)
+	EndLumpLoad();
+	currentLumpDir = "";
+	// Signal to the rest of the class that we're loading
+	lumpLevel = 0;
+}
+
+void LuaManager::PushLump(Lump* newLump)
+{
+	LuaLump* newLuaLump = (LuaLump*) lua_newuserdata(L, sizeof(LuaLump));
+	newLuaLump->index = newLump->index;
+	newLuaLump->contentType = newLump->contentType;
+	newLuaLump->loaded = newLump->loaded;
+
+	// Add to the current directory
+	if (currentLumpDir != "")currentLumpDir += "/";
+	currentLumpDir += newLump->name;
+
+	newLuaLump->name = CStrFromString(&(newLump->name));
+	newLuaLump->contentDir = CStrFromString(&currentLumpDir);
+	newLuaLump->metadata = CStrFromString(&(newLump->metadata));
+}
+
+// End the lump load
+void LuaManager::EndLumpLoad()
+{
+	// Pop all of the tables, just in case we're still in a deeper level
+	while(lumpLevel > 0)
+		PopLump();
+	
+	// Signal the end of the load
+	lumpLevel = -1;
+}
+
+// Creates a new dynamically allocated C string from a C++ string
+// It needs to be deleted when done with
+char* LuaManager::CStrFromString(string* in)
+{
+	char* ret = new char[in->length() + 1];
+	ret[in->length()] = '\0';
+	for (unsigned int i = 0; i < in->length(); i++)
+		ret[i] = (*in)[i];
+	return ret;
 }
 
 // This function actually runs the script
@@ -80,9 +131,9 @@ void LuaManager::LoadScript(const char* scriptName)
 
 LuaManager::~LuaManager()
 {
-	// Cleanup
-	lua_close(L);
-
 	// Delete the script table in the registry
 	luaL_unref(L, LUA_REGISTRYINDEX, scripts);
+
+	// Cleanup
+	lua_close(L);
 }

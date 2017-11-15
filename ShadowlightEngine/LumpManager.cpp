@@ -101,9 +101,9 @@ void LumpManager::LoadLumpFile(string filename)
 
 		printf("%d %04x\n", (signed int) newLump.contentType, newLump.contentType);
 
-		// Now, let's read the contentDir and contentIndex
+		// Now, let's read the JSON-formatted metadata
 		
-		newLump.contentDir = "";
+		newLump.metadata = "";
 
 		while (true)
 		{
@@ -114,7 +114,7 @@ void LumpManager::LoadLumpFile(string filename)
 			if (ch != '\0' && ch != EOF)
 			{
 				printf("%c", ch);
-				newLump.contentDir += ch;
+				newLump.metadata += ch;
 			}
 			// But if it's a null or EOF, break
 			else
@@ -128,8 +128,6 @@ void LumpManager::LoadLumpFile(string filename)
 		// Check for EOF and if there is, exit the loop
 		if (ch == EOF)
 			break;
-
-		fread((void*)&newLump.contentIndex, sizeof(uint16_t), 1, f);
 
 		// Set loaded and index to blank
 		newLump.index = -1;
