@@ -1,4 +1,4 @@
-# shadowlight-engine
+# Shadowlight Engine
 
 The Shadowlight Engine is a simplified, fast, efficient, cross-platform, Lua powered engine.
 
