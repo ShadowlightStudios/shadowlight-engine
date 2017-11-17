@@ -10,7 +10,7 @@ public:
 	Shader();
 	~Shader();
 	void Cleanup();
-	bool CreateShader(FILE*, long, GLenum);
+	bool CreateShader(const char*, long, GLenum);
 	GLuint GetID();
 };
 

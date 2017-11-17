@@ -1,6 +1,20 @@
 #include "stdafx.h"
 #include "LuaManager.h"
 
+// Garbage collector for LuaLump
+int LuaLumpGC(lua_State* L)
+{
+	LuaLump* gc = (LuaLump*) lua_touserdata(L, 1);
+	if (gc == NULL)
+	{
+		RaiseError("Tried to collect a non-lump", "");
+	}
+
+	// Return the number of returned variables
+	// 0 in this case
+	return 0;
+}
+
 LuaManager::LuaManager(ShadowlightEngine* gamePointer)
 {
 	game = gamePointer;
@@ -14,12 +28,19 @@ LuaManager::LuaManager(ShadowlightEngine* gamePointer)
 	// Load libs
 	luaL_openlibs(L);
 
+	// Make it a table
+	lua_newtable(L);
+
 	// Generate an index in the registry for the script table
+	// This also write the table to the new registry index
 	scripts = luaL_ref(L, LUA_REGISTRYINDEX);
 
 	// Make it a table
 	lua_newtable(L);
-	lua_rawseti(L, LUA_REGISTRYINDEX, scripts);
+
+	// Generate an index in the registry for the lump table
+	// This also writes the table to the new registry index
+	lumps = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
 // This function adds a script with name 'scriptName'
@@ -50,22 +71,88 @@ void LuaManager::StartLumpLoad()
 	currentLumpDir = "";
 	// Signal to the rest of the class that we're loading
 	lumpLevel = 0;
+
+	// Begin the load by fetching the lump table
+	lua_rawgeti(L, LUA_REGISTRYINDEX, scripts);
 }
 
 void LuaManager::PushLump(Lump* newLump)
 {
+	// If we're not loading lumps, exit
+	if (lumpLevel < 0)
+		return;
+
+	// Start by generating the lump userdata
 	LuaLump* newLuaLump = (LuaLump*) lua_newuserdata(L, sizeof(LuaLump));
 	newLuaLump->index = newLump->index;
 	newLuaLump->contentType = newLump->contentType;
 	newLuaLump->loaded = newLump->loaded;
-
 	// Add to the current directory
-	if (currentLumpDir != "")currentLumpDir += "/";
+	if (lumpLevel != 0)currentLumpDir += "/";
 	currentLumpDir += newLump->name;
-
 	newLuaLump->name = CStrFromString(&(newLump->name));
 	newLuaLump->contentDir = CStrFromString(&currentLumpDir);
 	newLuaLump->metadata = CStrFromString(&(newLump->metadata));
+
+	// parentlump lump
+
+	// Add the name so we don't need to keep track
+	lua_pushstring(L, newLuaLump->name);
+
+	// parentlump lump name
+
+	// Swap the lump and the name so we can use the name as the key later
+	lua_insert(L, -2);
+
+	// parentlump name lump
+
+	// Start this lump's metatable
+	lua_newtable(L);
+
+	// parentlump name lump metatable
+
+	// Add a garbage collector
+	lua_pushstring(L, "__gc");
+	lua_pushcfunction(L, LuaLumpGC);
+	lua_settable(L, -3);
+
+	// parentlump name lump metatable(with garbage)
+
+	// Push '__index' and the table
+	lua_pushstring(L, "__index");
+	lua_newtable(L);
+
+	// parentlump name lump metatable(with garbage) '__index' {}
+
+	// Increment the lump level; we're one level deeper
+	lumpLevel++;
+}
+
+void LuaManager::PopLump()
+{
+	// If we're not loading lumps, exit
+	if (lumpLevel < 0)
+		return;
+
+	// parentlump name lump metatable(with garbage) '__index' {lumps}
+
+	// Set the __index table to the metatable
+	lua_settable(L, -3);
+
+	// parentlump name lump metatable(with garbage and sublumps)
+
+	// Set the metatable
+	lua_setmetatable(L, -3);
+
+	// parentlump name lump(with garbage and sublumps)
+
+	// Write the new lump to the parent lump
+	lua_settable(L, -3);
+
+	// parentlump(with new lump)
+
+	// Decrement the lump level, we're one level higher
+	lumpLevel--;
 }
 
 // End the lump load
@@ -116,7 +203,7 @@ void LuaManager::LoadScript(const char* scriptName)
 
 	if (type != LUA_TFUNCTION)
 	{
-		RaiseError(SCRIPT_NONEXISTENT);
+		RaiseError("Script %s does not exist", scriptName);
 		return;
 	}
 

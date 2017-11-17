@@ -27,6 +27,7 @@ private:
 
 	string currentLumpDir;
 	int lumpLevel;
+	int lumps;
 public:
 	LuaManager(ShadowlightEngine*);
 	~LuaManager();

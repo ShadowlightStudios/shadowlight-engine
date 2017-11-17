@@ -16,7 +16,7 @@ Program::Program(GLuint vertexID, GLuint fragmentID)
 	// Check for errors
 	if (!programID)
 	{
-		RaiseError(PROGRAM_CREATE_FAIL);
+		RaiseError("Failed to generate program", "");
 		return;
 	}
 
@@ -42,7 +42,7 @@ Program::Program(GLuint vertexID, GLuint fragmentID)
 		// Display, cleanup, raise error, and exit
 		glDeleteProgram(programID);
 		printf("%s\n", buf);
-		RaiseError(PROGRAM_LINK_FAIL);
+		RaiseError("Failed to link program", "");
 		return;
 	}
 

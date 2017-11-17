@@ -22,7 +22,7 @@ Texture::Texture(const char* fileName)
 	f = fopen((const char*) fileName, "rb");
 	if (!f)
 	{
-		RaiseError(FILE_LOAD_FAIL);
+		RaiseError("Failed to load file %s", fileName);
 		return;
 	}
 
@@ -38,7 +38,7 @@ Texture::Texture(const char* fileName)
 	if (imageTypeCode != 2 && imageTypeCode != 3)
 	{
 		fclose(f);
-		RaiseError(TEXTURE_FORMAT_FAIL);
+		RaiseError("Targa file %s has unrecognized type", fileName);
 		return;
 	}
 
@@ -74,7 +74,7 @@ Texture::Texture(const char* fileName)
 	else
 	{
 		fclose(f);
-		RaiseError(TEXTURE_FORMAT_FAIL);
+		RaiseError("Targa files %s has unrecognized color mode", fileName);
 		return;
 	}
 
@@ -84,7 +84,7 @@ Texture::Texture(const char* fileName)
 	if (!imageData)
 	{
 		fclose(f);
-		RaiseError(ALLOCATION_ERROR);
+		RaiseError("Failed to allocate data from image %s", fileName);
 		return;
 	}
 
@@ -108,7 +108,7 @@ Texture::Texture(const char* fileName)
 	else
 	{
 		delete[] imageData;
-		RaiseError(TEXTURE_GEN_FAIL);
+		RaiseError("Failed to generate texture %s", fileName);
 		return;
 	}
 	delete[] imageData;

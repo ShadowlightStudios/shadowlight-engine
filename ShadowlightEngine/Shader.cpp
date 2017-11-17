@@ -7,17 +7,25 @@ Shader::Shader()
 	usable = false;
 }
 
-bool Shader::CreateShader(FILE* f, long length, GLenum shaderType)
+bool Shader::CreateShader(const char* fileName, long length, GLenum shaderType)
 {
 	GLchar* src;
 	GLint status;
+	FILE* f;
+
+	f = fopen((const char*)fileName, "rb");
+	if (!f)
+	{
+		RaiseError("Failed to load file %s", fileName);
+		return false;
+	}
 
 	usable = false;
 
 	src = new GLchar[length+1];
 	if (!src)
 	{
-		RaiseError(ALLOCATION_ERROR);
+		RaiseError("Failed to allocate memory for shader %s", fileName);
 		return false;
 	}
 
@@ -29,7 +37,7 @@ bool Shader::CreateShader(FILE* f, long length, GLenum shaderType)
 	if (!shaderID)
 	{
 		delete[] src;
-		RaiseError(SHADER_GEN_FAIL);
+		RaiseError("Failed to generate shader %s", fileName);
 		return false;
 	}
 
@@ -50,11 +58,13 @@ bool Shader::CreateShader(FILE* f, long length, GLenum shaderType)
 		// Cleanup
 		glDeleteShader(shaderID);
 		printf("%s\n", src);
+		RaiseError("Failed to compile shader, error log:\n%s", src);
 		// We don't need this
 		delete[] src;
-		RaiseError(SHADER_COMPILE_FAIL);
 		return false;
 	}
+	// Close the file
+	fclose(f);
 	// Setup succesful, set usable and return
 	usable = true;
 	return true;

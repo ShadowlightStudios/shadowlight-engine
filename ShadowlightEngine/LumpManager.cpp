@@ -43,7 +43,7 @@ void LumpManager::LoadLumpFile(string filename)
 	if (f == 0)
 	{
 		// Raise an error and exit
-		RaiseError(FILE_LOAD_FAIL);
+		RaiseError("Failed to load file %s", filename.data());
 		return;
 	}
 
@@ -397,7 +397,7 @@ void LumpManager::EnterLump(Lump* in)
 	}
 	default:
 	{
-		RaiseError(LUMP_TYPE_ERROR);
+		RaiseError("Unrecognized lump type in lump %s", ptr->content.name.data());
 		break;
 	}
 	}
