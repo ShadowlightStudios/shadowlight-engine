@@ -75,6 +75,7 @@ public:
 	void RegisterWithEngine(ShadowlightEngine* pEngine);
 
 	LumpManager(ShadowlightEngine*);
+	void SetShaderManager(ShaderManager*);
 	void Cleanup();
 	void EnterLump(Lump*);
 	void PrintTree();
