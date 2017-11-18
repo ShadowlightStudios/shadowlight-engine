@@ -7,7 +7,6 @@
 #include "ShaderManager.h"
 #include "SoundManager.h"
 
-
 struct ShadowlightEngine
 {
 	LuaManager *luaManager;
@@ -38,8 +37,6 @@ int main(int argc, char **argv)
 	fileName = "C:\\Marcus\\Dropbox\\The_Way_Back\\ShadowlightEngine\\v1\\ShadowlightEngine\\Debug\\TestLump.lmp";
 
 	sle.lumpManager->LoadLumpFile(fileName);
-
-	sle.lumpManager->PrintTree();
 
 	// Initialize GLEW
 	glewInit();
