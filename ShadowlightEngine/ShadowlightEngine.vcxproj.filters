@@ -39,6 +39,12 @@
     <ClCompile Include="ShaderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Batch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+>>>>>>> pr/2
     <ClCompile Include="LumpManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

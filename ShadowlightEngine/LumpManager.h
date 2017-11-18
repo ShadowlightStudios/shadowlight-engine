@@ -68,6 +68,8 @@ class LumpManager
 private:
 	ShadowlightEngine *game;
 public:
+	void RegisterWithEngine(ShadowlightEngine* pEngine);
+
 	LumpManager(ShadowlightEngine*);
 <<<<<<< HEAD
 =======
