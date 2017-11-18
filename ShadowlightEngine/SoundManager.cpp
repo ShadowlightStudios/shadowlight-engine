@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SoundManager.h"
+#include "ShadowlightEngine.h"
 
 SoundManager::SoundManager(ShadowlightEngine* gamePointer)
 {

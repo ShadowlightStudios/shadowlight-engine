@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "LuaManager.h"
+#include "ShadowlightEngine.h"
 
 // Garbage collector for LuaLump
 int LuaLumpGC(lua_State* L)

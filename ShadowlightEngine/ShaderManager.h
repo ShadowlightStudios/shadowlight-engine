@@ -4,6 +4,8 @@
 #include "Program.h"
 #include "ShadowlightEngine.h"
 
+class ShadowlightEngine;
+
 class ShaderManager
 {
 private:

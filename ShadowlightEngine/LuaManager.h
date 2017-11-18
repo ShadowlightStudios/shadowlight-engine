@@ -3,6 +3,10 @@
 #include "LumpManager.h"
 #include "ShadowlightEngine.h"
 
+class ShadowlightEngine;
+
+struct Lump;
+
 class LuaManager
 {
 private:

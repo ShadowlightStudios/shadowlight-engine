@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "ShadowlightEngine.h"
 
+class ShadowlightEngine;
+
 class OpenGLManager
 {
 private:

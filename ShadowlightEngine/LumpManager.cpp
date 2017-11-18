@@ -5,6 +5,38 @@
 LumpManager::LumpManager(ShadowlightEngine* gamePointer)
 {
 	game = gamePointer;
+<<<<<<< HEAD
+=======
+
+	root = (LumpNode*)0;
+	shm = (ShaderManager*)0;
+	depth = 0;
+}
+
+LumpManager::LumpManager()
+{
+}
+
+// Recursive function that prints the lump tree
+void LumpManager::RecursivePrintTree(LumpNode* in)
+{
+	if (in != 0)
+	{
+		// Print the tree to the right
+		RecursivePrintTree(in->right);
+		// Print this node
+		printf("Type:\t%04x\tName:\t%s\n", in->content.contentType, in->content.name.data());
+		// Print the tree to the left
+		RecursivePrintTree(in->left);
+	}
+}
+
+// Print the lump tree
+void LumpManager::PrintTree()
+{
+	// Just call the recursive function
+	RecursivePrintTree(root);
+>>>>>>> pr/2
 }
 
 // This function loads a lump file and enters all of the lumps into it

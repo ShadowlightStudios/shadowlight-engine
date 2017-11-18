@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Texture.h"
+#include "ShadowlightEngine.h"
 
 Texture::Texture(const char* fileName)
 {

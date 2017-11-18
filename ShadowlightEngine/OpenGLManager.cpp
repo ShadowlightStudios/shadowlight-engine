@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "OpenGLManager.h"
+#include "ShadowlightEngine.h"
 
 OpenGLManager::OpenGLManager(ShadowlightEngine* gamePointer)
 {

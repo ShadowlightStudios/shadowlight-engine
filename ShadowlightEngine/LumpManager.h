@@ -69,6 +69,11 @@ private:
 	ShadowlightEngine *game;
 public:
 	LumpManager(ShadowlightEngine*);
+<<<<<<< HEAD
+=======
+	LumpManager();
+	void SetShaderManager(ShaderManager*);
+>>>>>>> pr/2
 	void Cleanup();
 	bool LoadLump(LuaLump*);
 	void LoadLumpFile(string);
