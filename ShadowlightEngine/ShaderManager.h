@@ -4,20 +4,16 @@
 #include "Program.h"
 #include "ShadowlightEngine.h"
 
-class ShadowlightEngine;
-
 class ShaderManager
 {
 private:
-	ShadowlightEngine *game;
-
 	Shader **shaders;
 	Program **programs;
 	GLuint currentProg;
 	int shaderCount;
 	int programCount;
 public:
-	ShaderManager(ShadowlightEngine*);
+	ShaderManager();
 	int CreateShader();
 	int CreateProgram();
 	void Cleanup();

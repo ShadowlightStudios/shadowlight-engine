@@ -1,36 +1,13 @@
 #pragma once
+#include "Manager.h"
 #include "stdafx.h"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#include "LuaManager.h"
-#include "LumpManager.h"
-#include "OpenGLManager.h"
-#include "ShaderManager.h"
-#include "SoundManager.h"
-
-class ShadowlightEngine
+struct ShadowlightEngine
 {
-public:
-	ShadowlightEngine();
-	~ShadowlightEngine();
-
-	LuaManager *luaManager;
-	LumpManager *lumpManager;
-	OpenGLManager *openglManager;
-	ShaderManager *shaderManager;
-	SoundManager *soundManager;
+	Manager *luaManager;
+	Manager *lumpManager;
+	Manager *openglManager;
+	Manager *shaderManager;
+	Manager *soundManager;
+	Manager *textureManager;
 };
-=======
-struct ShadowlightEngine;
-
->>>>>>> parent of f63e808... Started work on the lump loader, made minor changes to the LuaManager header.
-=======
-struct ShadowlightEngine;
-
->>>>>>> parent of f63e808... Started work on the lump loader, made minor changes to the LuaManager header.
-=======
-struct ShadowlightEngine;
-
->>>>>>> parent of f63e808... Started work on the lump loader, made minor changes to the LuaManager header.

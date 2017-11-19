@@ -3,9 +3,8 @@
 
 
 
-TextureManager::TextureManager(ShadowlightEngine* gamePointer)
+TextureManager::TextureManager()
 {
-	game = gamePointer;
 }
 
 

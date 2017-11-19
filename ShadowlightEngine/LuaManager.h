@@ -18,8 +18,6 @@ struct LuaLump
 class LuaManager
 {
 private:
-	ShadowlightEngine* game;
-
 	char* CStrFromString(string*);
 
 	lua_State* L;
@@ -29,7 +27,7 @@ private:
 	int lumpLevel;
 	int lumps;
 public:
-	LuaManager(ShadowlightEngine*);
+	LuaManager();
 	~LuaManager();
 	void AddScript(const char*, const char*);
 	void LoadScript(const char* );

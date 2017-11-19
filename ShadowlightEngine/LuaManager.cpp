@@ -16,10 +16,8 @@ int LuaLumpGC(lua_State* L)
 	return 0;
 }
 
-LuaManager::LuaManager(ShadowlightEngine* gamePointer)
+LuaManager::LuaManager()
 {
-	game = gamePointer;
-
 	// Start without loading any lumps
 	lumpLevel = -1;
 

@@ -2,10 +2,8 @@
 #include "SoundManager.h"
 #include "ShadowlightEngine.h"
 
-SoundManager::SoundManager(ShadowlightEngine* gamePointer)
+SoundManager::SoundManager()
 {
-	game = gamePointer;
-
 	alGetError();
 	deviceAL = alcOpenDevice(NULL);
 	if (deviceAL == NULL)

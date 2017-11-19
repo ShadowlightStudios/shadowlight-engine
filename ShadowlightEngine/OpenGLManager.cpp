@@ -2,10 +2,8 @@
 #include "OpenGLManager.h"
 #include "ShadowlightEngine.h"
 
-OpenGLManager::OpenGLManager(ShadowlightEngine* gamePointer)
+OpenGLManager::OpenGLManager()
 {
-	game = gamePointer;
-
 	GLubyte* temp;
 	lpGLVersion = glGetString(GL_VERSION); // Grab OpenGL version string
 

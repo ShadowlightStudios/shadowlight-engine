@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssetArray.cpp" />
     <ClCompile Include="errors.cpp" />
     <ClCompile Include="LuaManager.cpp" />
     <ClCompile Include="LumpManager.cpp" />
@@ -141,10 +142,12 @@
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssetArray.h" />
     <ClInclude Include="errors.h" />
     <ClInclude Include="lua.hpp" />
     <ClInclude Include="LuaManager.h" />
     <ClInclude Include="LumpManager.h" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="OpenGLManager.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Shader.h" />

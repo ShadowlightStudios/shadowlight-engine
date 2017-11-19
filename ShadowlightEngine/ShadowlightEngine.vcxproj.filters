@@ -34,6 +34,9 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="AssetArray.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="errors.h">
@@ -73,6 +76,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetArray.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

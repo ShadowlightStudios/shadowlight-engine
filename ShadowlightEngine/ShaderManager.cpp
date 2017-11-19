@@ -3,10 +3,8 @@
 #include "ShadowlightEngine.h"
 
 
-ShaderManager::ShaderManager(ShadowlightEngine* gamePointer)
+ShaderManager::ShaderManager()
 {
-	game = gamePointer;
-
 	shaders = 0;
 	programs = 0;
 	shaderCount = 0;

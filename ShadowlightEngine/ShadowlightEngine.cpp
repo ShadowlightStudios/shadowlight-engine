@@ -6,16 +6,7 @@
 #include "OpenGLManager.h"
 #include "ShaderManager.h"
 #include "SoundManager.h"
-
-
-struct ShadowlightEngine
-{
-	LuaManager *luaManager;
-	LumpManager *lumpManager;
-	OpenGLManager *openglManager;
-	ShaderManager *shaderManager;
-	SoundManager *soundManager;
-};
+#include "TextureManager.h"
 
 int main(int argc, char **argv)
 {
@@ -27,19 +18,23 @@ int main(int argc, char **argv)
 
 	ShadowlightEngine sle;
 	
-	sle.luaManager = new LuaManager(&sle);
-	sle.lumpManager = new LumpManager(&sle);
-	sle.openglManager = new OpenGLManager(&sle);
-	sle.shaderManager = new ShaderManager(&sle);
-	sle.soundManager = new SoundManager(&sle);
+	sle.luaManager = (Manager*) new LuaManager();
+	sle.lumpManager = (Manager*) new LumpManager();
+	sle.openglManager = (Manager*) new OpenGLManager();
+	sle.shaderManager = (Manager*) new ShaderManager();
+	sle.soundManager = (Manager*) new SoundManager();
+	sle.textureManager = (Manager*) new TextureManager();
+
+	sle.luaManager->RegisterWithEngine(&sle);
+	sle.lumpManager->RegisterWithEngine(&sle);
+	sle.openglManager->RegisterWithEngine(&sle);
+	sle.shaderManager->RegisterWithEngine(&sle);
+	sle.soundManager->RegisterWithEngine(&sle);
+	sle.textureManager->RegisterWithEngine(&sle);
 
 	string fileName;
 
 	fileName = "C:\\Marcus\\Dropbox\\The_Way_Back\\ShadowlightEngine\\v1\\ShadowlightEngine\\Debug\\TestLump.lmp";
-
-	sle.lumpManager->LoadLumpFile(fileName);
-
-	sle.lumpManager->PrintTree();
 
 	// Initialize GLEW
 	glewInit();

@@ -1,19 +1,16 @@
 #pragma once
 #include "stdafx.h"
+#include "Manager.h"
 #include "ShadowlightEngine.h"
 
-class ShadowlightEngine;
-
-class OpenGLManager
+class OpenGLManager: public Manager
 {
 private:
-	ShadowlightEngine *game;
-
 	const GLubyte* lpGLVersion;
 	GLint iGLMajorVersion;
 	GLint iGLMinorVersion;
 public:
-	OpenGLManager(ShadowlightEngine*);
+	OpenGLManager();
 	~OpenGLManager();
 	GLint GetOpenGLMajorVersion();
 	GLint GetOpenGLMinorVersion();

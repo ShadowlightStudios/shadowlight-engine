@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "Manager.h"
 #include "ShaderManager.h"
 #include "ShadowlightEngine.h"
 
@@ -51,35 +52,15 @@ struct Lump
 	string metadata;
 };
 
-struct LumpNode
+class LumpManager: public Manager
 {
-	Lump content;
-	LumpNode* left;
-	LumpNode* right;
-};
-
-class LumpManager
-{
-private:
-	ShadowlightEngine *game;
-
-	LumpNode* root;
-	int depth;
-	void DeleteTree(LumpNode*);
-	LumpNode* GetLumpAddress(string);
-	void RecursivePrintTree(LumpNode*);
-
-	// Manager pointers
-	ShaderManager* shm;
 public:
 	void RegisterWithEngine(ShadowlightEngine* pEngine);
 
-	LumpManager(ShadowlightEngine*);
-	void SetShaderManager(ShaderManager*);
 	void Cleanup();
 	void EnterLump(Lump*);
-	void PrintTree();
 	void LoadLumpFile(string);
+	Manager* ManagerFromLumpType(const Lump&);
 	~LumpManager();
 };
 
