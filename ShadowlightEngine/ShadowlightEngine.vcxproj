@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="AssetArray.h" />
     <ClInclude Include="errors.h" />
+    <ClInclude Include="JSON.h" />
     <ClInclude Include="lua.hpp" />
     <ClInclude Include="LuaManager.h" />
     <ClInclude Include="LumpManager.h" />

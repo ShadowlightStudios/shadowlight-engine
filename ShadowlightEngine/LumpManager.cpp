@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "LumpManager.h"
+#include "ShadowlightEngine.h"
 
 // This function loads a lump file and enters all of the lumps into it
 void LumpManager::LoadLumpFile(string filename)
@@ -54,7 +55,7 @@ void LumpManager::LoadLumpFile(string filename)
 
 		if (newLump.name.length() == 0)
 		{
-			// TO BE CONTINUED . . .
+			pEngine->luaManager->PopLump();
 		}
 
 		printf("\n");
@@ -131,17 +132,7 @@ Manager* LumpManager::ManagerFromLumpType(const Lump& in)
 	case LT_FRAGMENT_SHADER:
 	case LT_GEOMETRY_SHADER:
 	case LT_PROGRAM:
-		return pEngine->shaderManager;
-	case LT_UNIFORM:
-	{
-		printf("Uniform list");
-		break;
-	}
-	case LT_VERTEX_ARRAY:
-	{
-		printf("Vertex array");
-		break;
-	}
+		return (Manager*)pEngine->shaderManager;
 	case LT_TEXTURE_1D:
 	case LT_TEXTURE_1D_ARRAY:
 	case LT_TEXTURE_2D:
@@ -152,15 +143,17 @@ Manager* LumpManager::ManagerFromLumpType(const Lump& in)
 	case LT_TEXTURE_CUBE:
 	case LT_TEXTURE_CUBE_ARRAY:
 	case LT_TEXTURE_RECT:
-		return pEngine->textureManager;
+		return (Manager*)pEngine->textureManager;
 	case LT_SOUND:
 	case LT_MUSIC_OGG:
 	case LT_MUSIC_MP3:
-		return pEngine->soundManager;
+		return (Manager*) pEngine->soundManager;
 	case LT_TEXT:
 	case LT_INPUT_BINDINGS:
 	case LT_MAP:
 	case LT_TRANSFORM_FEEDBACK_BUFFER:
+	case LT_UNIFORM:
+	case LT_VERTEX_ARRAY:
 	default:
 	{
 		RaiseError("Unrecognized lump type in lump %s", in.name.data());

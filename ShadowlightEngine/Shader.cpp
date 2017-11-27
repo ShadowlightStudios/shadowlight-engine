@@ -4,13 +4,29 @@
 Shader::Shader()
 {
 	shaderID = 0;
+	type = GL_NONE;
 	usable = false;
 }
 
-bool Shader::CreateShader(const char* fileName, long length, GLenum shaderType)
+// Assigns an attribute to a vertex shader
+// Returns false if out-of-bounds
+bool Shader::SetShaderAttribute(const char* attName, int index)
+{
+	// Bounds checking
+	if (index < 0 || index >= 16)
+		return false;
+	vAttributes[index] = (string)attName;
+	return true;
+}
+
+// Creates a shader from the file "fileName"
+// shaderType must be GL_VERTEX_SHADER, GL_FRAGMENT_SHADER,
+// or GL_GEOMETRY_SHADER
+bool Shader::CreateShader(const char* fileName, GLenum shaderType)
 {
 	GLchar* src;
 	GLint status;
+	long length;
 	FILE* f;
 
 	f = fopen((const char*)fileName, "rb");
@@ -21,6 +37,11 @@ bool Shader::CreateShader(const char* fileName, long length, GLenum shaderType)
 	}
 
 	usable = false;
+
+	// Get the length
+	fseek(f, 0, SEEK_END);
+	length = ftell(f);
+	fseek(f, 0, SEEK_SET);
 
 	src = new GLchar[length+1];
 	if (!src)
@@ -65,8 +86,9 @@ bool Shader::CreateShader(const char* fileName, long length, GLenum shaderType)
 	}
 	// Close the file
 	fclose(f);
-	// Setup succesful, set usable and return
+	// Setup succesful, set usable, set type, and return
 	usable = true;
+	type = shaderType;
 	return true;
 }
 
@@ -77,6 +99,7 @@ void Shader::Cleanup()
 		glDeleteShader(shaderID);
 		shaderID = 0;
 		usable = false;
+		type = GL_NONE;
 	}
 }
 

@@ -1,7 +1,6 @@
 #pragma once
-#include "stdafx.h"
 #include "LumpManager.h"
-#include "ShadowlightEngine.h"
+#include "Manager.h"
 
 // A strucure made specifically for
 // holding Lua userdatum lumps
@@ -15,7 +14,7 @@ struct LuaLump
 	const char* metadata;
 };
 
-class LuaManager
+class LuaManager: public Manager
 {
 private:
 	char* CStrFromString(string*);

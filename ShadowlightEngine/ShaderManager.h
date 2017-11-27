@@ -1,21 +1,18 @@
 #pragma once
-#include "stdafx.h"
+#include "Manager.h"
 #include "Shader.h"
 #include "Program.h"
-#include "ShadowlightEngine.h"
+#include "AssetArray.h"
 
-class ShaderManager
+class ShaderManager: public Manager
 {
 private:
-	Shader **shaders;
-	Program **programs;
+	AssetArray<Shader> shaders;
+	AssetArray<Program> programs;
 	GLuint currentProg;
-	int shaderCount;
-	int programCount;
 public:
 	ShaderManager();
-	int CreateShader();
-	int CreateProgram();
+	int Create(const Lump&);
 	void Cleanup();
 	~ShaderManager();
 };

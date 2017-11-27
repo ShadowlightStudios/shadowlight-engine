@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string>
+#include <vector>
 using namespace std;
 
 #include "Dependencies\glew\glew.h"
@@ -11,3 +12,10 @@ using namespace std;
 #include "Dependencies\glm\gtc\type_ptr.hpp"
 #include "errors.h"
 #include "lua.hpp"
+
+#include "LuaManager.h"
+#include "LumpManager.h"
+#include "OpenGLManager.h"
+#include "ShaderManager.h"
+#include "SoundManager.h"
+#include "TextureManager.h"

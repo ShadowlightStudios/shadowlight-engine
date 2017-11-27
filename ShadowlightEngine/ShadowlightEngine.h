@@ -4,10 +4,10 @@
 
 struct ShadowlightEngine
 {
-	Manager *luaManager;
-	Manager *lumpManager;
-	Manager *openglManager;
-	Manager *shaderManager;
-	Manager *soundManager;
-	Manager *textureManager;
+	LuaManager *luaManager;
+	LumpManager *lumpManager;
+	OpenGLManager *openglManager;
+	ShaderManager *shaderManager;
+	SoundManager *soundManager;
+	TextureManager *textureManager;
 };

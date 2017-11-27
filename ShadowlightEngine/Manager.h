@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 
 struct ShadowlightEngine;
 struct Lump;
@@ -9,7 +8,7 @@ class Manager
 protected:
 	ShadowlightEngine* pEngine;
 public:
-	void RegisterWithEngine(ShadowlightEngine* in) { pEngine = in; };
+	void RegisterWithEngine(ShadowlightEngine* pEngine) { this->pEngine = pEngine; };
 	virtual void Cleanup();
 	virtual bool DeleteItem(int);
 	virtual bool Load(int);

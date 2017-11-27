@@ -18,12 +18,12 @@ int main(int argc, char **argv)
 
 	ShadowlightEngine sle;
 	
-	sle.luaManager = (Manager*) new LuaManager();
-	sle.lumpManager = (Manager*) new LumpManager();
-	sle.openglManager = (Manager*) new OpenGLManager();
-	sle.shaderManager = (Manager*) new ShaderManager();
-	sle.soundManager = (Manager*) new SoundManager();
-	sle.textureManager = (Manager*) new TextureManager();
+	sle.luaManager = new LuaManager();
+	sle.lumpManager = new LumpManager();
+	sle.openglManager = new OpenGLManager();
+	sle.shaderManager = new ShaderManager();
+	sle.soundManager = new SoundManager();
+	sle.textureManager = new TextureManager();
 
 	sle.luaManager->RegisterWithEngine(&sle);
 	sle.lumpManager->RegisterWithEngine(&sle);

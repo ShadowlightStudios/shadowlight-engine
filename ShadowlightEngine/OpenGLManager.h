@@ -1,7 +1,5 @@
 #pragma once
-#include "stdafx.h"
 #include "Manager.h"
-#include "ShadowlightEngine.h"
 
 class OpenGLManager: public Manager
 {

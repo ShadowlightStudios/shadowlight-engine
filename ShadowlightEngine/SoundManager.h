@@ -1,8 +1,7 @@
 #pragma once
-#include "stdafx.h"
-#include "ShadowlightEngine.h"
+#include "Manager.h"
 
-class SoundManager
+class SoundManager: public Manager
 {
 private:
 	ALCdevice* deviceAL;

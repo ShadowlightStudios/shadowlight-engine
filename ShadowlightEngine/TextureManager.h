@@ -1,6 +1,5 @@
 #pragma once
-#include "stdafx.h"
-#include "ShadowlightEngine.h"
+#include "Manager.h"
 
 class TextureManager: public Manager
 {

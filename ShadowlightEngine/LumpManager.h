@@ -1,8 +1,6 @@
 #pragma once
-#include "stdafx.h"
 #include "Manager.h"
 #include "ShaderManager.h"
-#include "ShadowlightEngine.h"
 
 // Define types of lumps
 // "LT_" stands for "lump type"
@@ -52,10 +50,14 @@ struct Lump
 	string metadata;
 };
 
-class LumpManager: public Manager
+class LumpManager
 {
+private:
+	ShadowlightEngine* pEngine;
 public:
-	void RegisterWithEngine(ShadowlightEngine* pEngine);
+	void RegisterWithEngine(ShadowlightEngine* pEngine) {
+		this->pEngine = pEngine;
+	};
 
 	void Cleanup();
 	void EnterLump(Lump*);
