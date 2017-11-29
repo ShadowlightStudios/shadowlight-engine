@@ -1,6 +1,7 @@
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 #include "Dependencies\glew\glew.h"

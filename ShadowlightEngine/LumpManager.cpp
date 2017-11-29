@@ -6,6 +6,8 @@
 void LumpManager::LoadLumpFile(string filename)
 {
 	FILE* f;
+	Lump* currentParent = NULL;
+	bool testInsert;
 	// Open the file
 	f = fopen(filename.data(), "rb");
 
@@ -51,11 +53,11 @@ void LumpManager::LoadLumpFile(string filename)
 		// Now: if this string has length 0
 		// (An empty string, or a solitary '\0' in the file)
 		// We're going to pop up one level in the lump
-		// tree
+		// tree as long as the current parent is not null
 
-		if (newLump.name.length() == 0)
+		if (newLump.name.length() == 0 && currentParent != NULL)
 		{
-			pEngine->luaManager->PopLump();
+			currentParent = currentParent->parent;
 		}
 
 		printf("\n");
@@ -102,12 +104,31 @@ void LumpManager::LoadLumpFile(string filename)
 		// Set loaded and index to blank
 		newLump.index = -1;
 		newLump.loaded = false;
+	
+		// Set the parent
+		newLump.parent = currentParent;
 
 		// Now we have our loaded lump!
 		// Finally, enter into the tree.
-		EnterLump(&newLump);
+		if (currentParent != NULL)
+		{
+			testInsert = currentParent->Insert(newLump);
+		}
+		else
+		{
+			testInsert = this->EnterLump(newLump);
+		}
+		
+		// Do a bit of error checking to see if this lump already existed
+		if (!testInsert)
+		{
+			// Raise an error and exit
+			RaiseError("Repeat lump name %s in lump file", newLump.name.data());
+			return;
+		}
 
-		break;
+		// Go one level deeper, set the current parent
+		currentParent = &newLump;
 	}
 
 	// Close the file and exit
@@ -119,6 +140,20 @@ void LumpManager::LoadLumpFile(string filename)
 void LumpManager::Cleanup()
 {
 	return;
+}
+
+// Enter a lump into the base
+bool LumpManager::EnterLump(const Lump& lumpIn)
+{
+	// If the key does not exist, carry on
+	if (lumps.find(lumpIn.name) == lumps.end())
+	{
+		lumps.insert(make_pair(lumpIn.name, lumpIn));
+		return true;
+	}
+	// Otherwise, this lump already exists, and we can exit with false
+	else
+		return false;
 }
 
 Manager* LumpManager::ManagerFromLumpType(const Lump& in)

@@ -1,7 +1,7 @@
 #pragma once
 
 struct ShadowlightEngine;
-struct Lump;
+class Lump;
 
 class Manager
 {

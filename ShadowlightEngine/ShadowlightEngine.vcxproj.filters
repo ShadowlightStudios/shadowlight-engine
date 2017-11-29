@@ -37,6 +37,9 @@
     <ClCompile Include="AssetArray.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Lump.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="errors.h">
@@ -85,6 +88,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="JSON.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Lump.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

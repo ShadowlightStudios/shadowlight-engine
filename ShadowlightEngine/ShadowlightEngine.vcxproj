@@ -131,6 +131,7 @@
     <ClCompile Include="AssetArray.cpp" />
     <ClCompile Include="errors.cpp" />
     <ClCompile Include="LuaManager.cpp" />
+    <ClCompile Include="Lump.cpp" />
     <ClCompile Include="LumpManager.cpp" />
     <ClCompile Include="OpenGLManager.cpp" />
     <ClCompile Include="Program.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="JSON.h" />
     <ClInclude Include="lua.hpp" />
     <ClInclude Include="LuaManager.h" />
+    <ClInclude Include="Lump.h" />
     <ClInclude Include="LumpManager.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="OpenGLManager.h" />
