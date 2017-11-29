@@ -37,6 +37,7 @@
     <ClCompile Include="AssetArray.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="GPUResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="errors.h">
@@ -87,6 +88,7 @@
     <ClInclude Include="JSON.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="GPUResource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
