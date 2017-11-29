@@ -19,3 +19,5 @@ using namespace std;
 #include "ShaderManager.h"
 #include "SoundManager.h"
 #include "TextureManager.h"
+
+#include "GPUResource.h"

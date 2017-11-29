@@ -14,7 +14,6 @@ Texture::Texture(const char* fileName)
 	GLenum format;
 
 	// First, iniatilize everything
-	textureID = 0;
 	width = 0;
 	height = 0;
 	usable = false;
@@ -96,9 +95,9 @@ Texture::Texture(const char* fileName)
 	fclose(f);
 
 	// Create the texture
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	if (glIsTexture(textureID) == GL_TRUE)
+	glGenTextures(1, &Resource);
+	glBindTexture(GL_TEXTURE_2D, Resource);
+	if (glIsTexture(Resource) == GL_TRUE)
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
@@ -117,65 +116,70 @@ Texture::Texture(const char* fileName)
 	return;
 }
 
-GLuint Texture::GetID()
+Texture::Texture(int width, int height, GLuint format)
 {
-	if (usable)
+	this->width = width;
+	this->height = height;
+	this->TextureFormat = format;
+	Mappable = false;
+
+	glGenTextures(1, &Resource);
+	BindPoint = GL_TEXTURE_2D;
+	glBindTexture(BindPoint, Resource);
+	Bound = true;
+
+	if (glIsTexture(Resource) == GL_TRUE)
 	{
-		return textureID;
-	}
-	else
-	{
-		return 0;
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		//glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+
+		//TODO: implement method for setting texture data and then calling glTexImage2D to commit data to GPU
 	}
 }
 
-GLuint Texture::GetWidth()
+GLuint Texture::GetID() const
 {
-	if (usable)
-	{
-		return width;
-	}
-	else
-	{
-		return 0;
-	}
+	return usable ? Resource : 0;
 }
 
-GLuint Texture::GetHeight()
+GLuint Texture::GetWidth() const
 {
-	if (usable)
-	{
-		return height;
-	}
-	else
-	{
-		return 0;
-	}
+	return width; //no reason not to return width/height at any time to anything. for example for computations on procedural textures before fully "usable"
+}
+
+GLuint Texture::GetHeight() const
+{
+	return height;
 }
 
 void Texture::Bind()
 {
 	if (usable)
 	{
-		glBindTexture(GL_TEXTURE_2D, textureID);
-	}
-	else
-	{
-		return;
+		glBindTexture(GL_TEXTURE_2D, Resource);
+
+		Bound = true;
+		BindPoint = GL_TEXTURE_2D;
 	}
 }
 
-void Texture::Cleanup()
+void Texture::Release()
 {
 	if (usable)
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
-		glDeleteTextures(1, &textureID);
-		textureID = 0;
+		glDeleteTextures(1, &Resource);
+		Resource = 0;
+		Bound = 0;
+		BindPoint = 0;
 	}
 }
 
+
 Texture::~Texture()
 {
-	Cleanup();
+	Release();
 }
