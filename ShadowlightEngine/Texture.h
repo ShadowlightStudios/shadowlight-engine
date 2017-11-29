@@ -1,20 +1,25 @@
 #pragma once
 #include "stdafx.h"
 
-class Texture
+class Texture : public GPUResource
 {
 private:
-	GLuint textureID;
 	GLuint width;
 	GLuint height;
+	GLuint TextureFormat;
 	bool usable;
+
 public:
 	Texture(const char*);
+	Texture(int width, int height, GLuint format);
 	~Texture();
-	GLuint GetID();
-	GLuint GetWidth();
-	GLuint GetHeight();
-	void Bind();
-	void Cleanup();
-};
 
+
+	GLuint GetID() const;
+	GLuint GetWidth() const;
+	GLuint GetHeight() const;
+
+	void Bind();
+
+	virtual void Release() override;
+};
