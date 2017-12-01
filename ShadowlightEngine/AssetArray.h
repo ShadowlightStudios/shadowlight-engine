@@ -1,19 +1,12 @@
 #pragma once
-#include "stdafx.h"
-
-template<class T>
-struct List
-{
-	T* info;
-	List<T> next;
-};
+#include <vector>
 
 template<class T>
 class AssetArray
 {
 private:
-	List<T>* list;
-	List<T>* GetIndexed(int);
+	std::vector<T*> assetArray;
+	int iLength;
 public:
 	AssetArray();
 	~AssetArray();
