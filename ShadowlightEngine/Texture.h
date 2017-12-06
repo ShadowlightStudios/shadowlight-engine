@@ -7,7 +7,6 @@ private:
 	GLuint width;
 	GLuint height;
 	GLuint TextureFormat;
-	bool usable;
 
 public:
 	Texture(const char*);
@@ -20,6 +19,7 @@ public:
 	GLuint GetHeight() const;
 
 	void Bind();
+	void BindIndexed(int);
 
 	virtual void Release() override;
 };

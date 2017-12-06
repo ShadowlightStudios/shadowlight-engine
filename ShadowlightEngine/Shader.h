@@ -1,19 +1,23 @@
 #pragma once
 #include "stdafx.h"
+#include <vector>
 
-class Shader
+class Shader: public GPUResource
 {
-private:
-	GLuint shaderID;
+protected:
 	GLenum type;
-	bool usable;
-	vector<string> vAttributes;
+	virtual void SetShaderSpecific(GLuint) = 0;
 public:
 	Shader();
 	~Shader();
-	void Cleanup();
 	bool CreateShader(const char*, GLenum);
-	bool SetShaderAttribute(const char*, int);
-	GLuint GetID();
-};
+	void BindToProgram(GLuint);
+	void Release();
+	GLuint GetID() {
+		return bMappable? iResource:0;
+	};
 
+	// We don't need to ever bind a raw shader; just return in all cases
+	void Bind() { return; };
+	void BindIndexed(int) { return; };
+};

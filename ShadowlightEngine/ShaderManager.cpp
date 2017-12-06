@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ShaderManager.h"
 #include "ShadowlightEngine.h"
+#include "FragmentShader.h"
 #include "JSON.h"
 
 ShaderManager::ShaderManager()
@@ -72,7 +73,20 @@ int ShaderManager::Create(const Lump& in)
 		const char* shaderFile = doc["file"].GetString();
 
 		// Now that we have everything we need except for the shader-specific stuff, create and load the shader
-		i = shaders.Gen();
+		// Switch for the right type
+		switch (shad)
+		{
+		case GL_VERTEX_SHADER:
+			i = shaders.Gen<VertexShader>();
+			break;
+		case GL_GEOMETRY_SHADER:
+			i = shaders.Gen<GeometryShader>();
+			break;
+		case GL_FRAGMENT_SHADER:
+			i = shaders.Gen<FragmentShader>();
+			break;
+		}
+		i = shaders.Gen<FragmentShader>();
 		Shader* shader = shaders.Get(i);
 		// Load the shader while checking for errors
 		if (!shader->CreateShader(shaderFile, shad))
@@ -167,7 +181,7 @@ int ShaderManager::Create(const Lump& in)
 				}
 
 				// Write the color attachment
-				shader->SetColorAttachment(itr->value.GetString(), atoi(itr->name.GetString()));
+				dynamic_cast<FragmentShader*>(shader)->SetColorAttachment(itr->value.GetString(), atoi(itr->name.GetString()));
 			}
 
 			// Exit the loop

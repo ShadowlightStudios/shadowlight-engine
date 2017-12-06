@@ -3,20 +3,9 @@
 
 Shader::Shader()
 {
-	shaderID = 0;
+	iResource = 0;
 	type = GL_NONE;
-	usable = false;
-}
-
-// Assigns an attribute to a vertex shader
-// Returns false if out-of-bounds
-bool Shader::SetShaderAttribute(const char* attName, int index)
-{
-	// Bounds checking
-	if (index < 0 || index >= 16)
-		return false;
-	vAttributes[index] = (string)attName;
-	return true;
+	bMappable = false;
 }
 
 // Creates a shader from the file "fileName"
@@ -24,6 +13,9 @@ bool Shader::SetShaderAttribute(const char* attName, int index)
 // or GL_GEOMETRY_SHADER
 bool Shader::CreateShader(const char* fileName, GLenum shaderType)
 {
+	// Check if this shader has already been initialized
+	if (bMappable)
+		return false;
 	GLchar* src;
 	GLint status;
 	long length;
@@ -36,7 +28,7 @@ bool Shader::CreateShader(const char* fileName, GLenum shaderType)
 		return false;
 	}
 
-	usable = false;
+	bMappable = false;
 
 	// Get the length
 	fseek(f, 0, SEEK_END);
@@ -53,31 +45,31 @@ bool Shader::CreateShader(const char* fileName, GLenum shaderType)
 	fread((void*)src, sizeof(GLchar), length, f);
 	src[length] = '\0';
 
-	shaderID = glCreateShader(shaderType); // Create a new shader
+	iResource = glCreateShader(shaderType); // Create a new shader
 
-	if (!shaderID)
+	if (!iResource)
 	{
 		delete[] src;
 		RaiseError("Failed to generate shader %s", fileName);
 		return false;
 	}
 
-	glShaderSource(shaderID, 1, &src, (const GLint*) &length);
-	glCompileShader(shaderID);
+	glShaderSource(iResource, 1, &src, (const GLint*) &length);
+	glCompileShader(iResource);
 
 	// We don't need this anymore
 	delete[] src;
 
 	// Check if it compiled correctly
-	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
+	glGetShaderiv(iResource, GL_COMPILE_STATUS, &status);
 	if (!status)
 	{
 		// Print errors, generate a buffer
-		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, (GLint*) &length);
+		glGetShaderiv(iResource, GL_INFO_LOG_LENGTH, (GLint*) &length);
 		src = new GLchar[length + 1];
-		glGetShaderInfoLog(shaderID, length, &status, src);
+		glGetShaderInfoLog(iResource, length, &status, src);
 		// Cleanup
-		glDeleteShader(shaderID);
+		glDeleteShader(iResource);
 		printf("%s\n", src);
 		RaiseError("Failed to compile shader, error log:\n%s", src);
 		// We don't need this
@@ -87,36 +79,30 @@ bool Shader::CreateShader(const char* fileName, GLenum shaderType)
 	// Close the file
 	fclose(f);
 	// Setup succesful, set usable, set type, and return
-	usable = true;
+	bMappable = true;
 	type = shaderType;
 	return true;
 }
 
-void Shader::Cleanup()
+void Shader::BindToProgram(GLuint prog)
 {
-	if (usable)
+	glAttachShader(prog, iResource);
+	// Set shader-specific
+	SetShaderSpecific(prog);
+}
+
+void Shader::Release()
+{
+	if (bMappable)
 	{
-		glDeleteShader(shaderID);
-		shaderID = 0;
-		usable = false;
+		glDeleteShader(iResource);
+		iResource = 0;
+		bMappable = false;
 		type = GL_NONE;
 	}
 }
 
-GLuint Shader::GetID()
-{
-	if (usable)
-	{
-		return shaderID;
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-
 Shader::~Shader()
 {
-	Cleanup();
+	Release();
 }

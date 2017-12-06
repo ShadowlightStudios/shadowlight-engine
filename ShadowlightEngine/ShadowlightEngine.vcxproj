@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="AssetArray.cpp" />
     <ClCompile Include="errors.cpp" />
+    <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="GPUResource.cpp" />
     <ClCompile Include="LuaManager.cpp" />
     <ClCompile Include="Lump.cpp" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="AssetArray.h" />
     <ClInclude Include="errors.h" />
+    <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="GPUResource.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="lua.hpp" />

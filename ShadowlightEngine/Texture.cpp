@@ -16,7 +16,7 @@ Texture::Texture(const char* fileName)
 	// First, iniatilize everything
 	width = 0;
 	height = 0;
-	usable = false;
+	bMappable = false;
 
 
 	f = fopen((const char*) fileName, "rb");
@@ -95,9 +95,9 @@ Texture::Texture(const char* fileName)
 	fclose(f);
 
 	// Create the texture
-	glGenTextures(1, &Resource);
-	glBindTexture(GL_TEXTURE_2D, Resource);
-	if (glIsTexture(Resource) == GL_TRUE)
+	glGenTextures(1, &iResource);
+	glBindTexture(GL_TEXTURE_2D, iResource);
+	if (glIsTexture(iResource) == GL_TRUE)
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
@@ -112,7 +112,7 @@ Texture::Texture(const char* fileName)
 		return;
 	}
 	delete[] imageData;
-	usable = true;
+	bMappable = true;
 	return;
 }
 
@@ -121,20 +121,20 @@ Texture::Texture(int width, int height, GLuint format)
 	this->width = width;
 	this->height = height;
 	this->TextureFormat = format;
-	Mappable = false;
+	bMappable = false;
 
-	glGenTextures(1, &Resource);
-	BindPoint = GL_TEXTURE_2D;
-	glBindTexture(BindPoint, Resource);
-	Bound = true;
+	glGenTextures(1, &iResource);
+	iBindPoint = GL_TEXTURE_2D;
+	glBindTexture(iBindPoint, iResource);
+	bBound = true;
 
-	if (glIsTexture(Resource) == GL_TRUE)
+	if (glIsTexture(iResource) == GL_TRUE)
 	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		//glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+		glTexParameteri(iBindPoint, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(iBindPoint, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+		glTexParameteri(iBindPoint, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(iBindPoint, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		//glTexImage2D(iBindPoint, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 
 		//TODO: implement method for setting texture data and then calling glTexImage2D to commit data to GPU
 	}
@@ -142,7 +142,7 @@ Texture::Texture(int width, int height, GLuint format)
 
 GLuint Texture::GetID() const
 {
-	return usable ? Resource : 0;
+	return bMappable ? iResource : 0;
 }
 
 GLuint Texture::GetWidth() const
@@ -157,24 +157,38 @@ GLuint Texture::GetHeight() const
 
 void Texture::Bind()
 {
-	if (usable)
+	if (bMappable)
 	{
-		glBindTexture(GL_TEXTURE_2D, Resource);
+		glBindTexture(iBindPoint, iResource);
 
-		Bound = true;
-		BindPoint = GL_TEXTURE_2D;
+		bBound = true;
+		iBindPoint = GL_TEXTURE_2D;
+	}
+}
+
+// Bind to a specific texture binding point
+void Texture::BindIndexed(int index)
+{
+	if (bMappable)
+	{
+		// Bind to the specific index
+		glActiveTexture(GL_TEXTURE + index);
+		glBindTexture(iBindPoint, iResource);
+
+		bBound = true;
+		iBindPoint = GL_TEXTURE_2D;
 	}
 }
 
 void Texture::Release()
 {
-	if (usable)
+	if (bMappable)
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
-		glDeleteTextures(1, &Resource);
-		Resource = 0;
-		Bound = 0;
-		BindPoint = 0;
+		glDeleteTextures(1, &iResource);
+		iResource = 0;
+		bBound = false;
+		iBindPoint = 0;
 	}
 }
 

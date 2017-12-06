@@ -37,7 +37,15 @@
     <ClCompile Include="AssetArray.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="GPUResource.cpp" />
+    <ClCompile Include="FragmentShader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUResource.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Lump.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="errors.h">
@@ -88,7 +96,15 @@
     <ClInclude Include="JSON.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="GPUResource.h" />
+    <ClInclude Include="Lump.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUResource.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FragmentShader.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">

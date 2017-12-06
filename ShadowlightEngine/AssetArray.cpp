@@ -25,8 +25,16 @@ T* AssetArray<T>::GetIndexed(int i)
 	return assetArray[i];
 }
 
+// Generate a new asset with type "T"
+template<class T>
+int AssetArray<T>::Gen()
+{
+	return Gen<T>();
+}
+
 // Generates a new asset and returns it's index
 template<class T>
+template<class N>
 int AssetArray<T>::Gen()
 {
 	// Find an empty slot
@@ -38,13 +46,13 @@ int AssetArray<T>::Gen()
 		if (!assetArray[i])
 		{
 			// Exit with it
-			assetArray[i] = new T;
+			assetArray[i] = new N;
 			return i;
 		}
 	}
 	// If we've made it this far, then there are no free slots
 	// Push a new one
-	assetArray.push_back(new T);
+	assetArray.push_back(new N);
 	return iLength;
 }
 
