@@ -131,6 +131,7 @@
     <ClCompile Include="AssetArray.cpp" />
     <ClCompile Include="errors.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
+    <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="GPUResource.cpp" />
     <ClCompile Include="LuaManager.cpp" />
     <ClCompile Include="Lump.cpp" />
@@ -143,11 +144,13 @@
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetArray.h" />
     <ClInclude Include="errors.h" />
     <ClInclude Include="FragmentShader.h" />
+    <ClInclude Include="GeometryShader.h" />
     <ClInclude Include="GPUResource.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="lua.hpp" />
@@ -164,6 +167,7 @@
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

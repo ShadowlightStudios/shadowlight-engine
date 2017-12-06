@@ -3,14 +3,9 @@
 
 
 // Set up the shader-specific
+// We're just using a map, no need to initialize
 FragmentShader::FragmentShader()
 {
-	// Loop through the color attachments
-	for (int i = 0; i < 16; i++)
-	{
-		// Set each one to blank
-		colorAttachments[i] = "";
-	}
 }
 
 bool FragmentShader::SetColorAttachment(string name, int index)
@@ -29,12 +24,8 @@ void FragmentShader::SetShaderSpecific(GLuint prog)
 	// Let's set the color attachments
 	for (i = colorAttachments.begin(); i != colorAttachments.end(); ++i)
 	{
-		// Loop through, bind the existing ones
-		if (i->second.length() > 0)
-		{
-			// Bind the data location
-			glBindFragDataLocation(prog, i->first, i->second.data());
-		}
+		// Bind the data location
+		glBindFragDataLocation(prog, i->first, i->second.data());
 	}
 }
 

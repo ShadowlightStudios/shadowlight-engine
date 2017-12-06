@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ShaderManager.h"
 #include "ShadowlightEngine.h"
+#include "VertexShader.h"
+#include "GeometryShader.h"
 #include "FragmentShader.h"
 #include "JSON.h"
 
@@ -136,7 +138,7 @@ int ShaderManager::Create(const Lump& in)
 				}
 
 				// Write the new attribute
-				shader->SetShaderAttribute(itr->value.GetString(), atoi(itr->name.GetString()));
+				dynamic_cast<VertexShader*>(shader)->SetAttribute(itr->value.GetString(), atoi(itr->name.GetString()));
 			}
 
 			// Exit the loop

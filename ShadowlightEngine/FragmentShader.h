@@ -6,7 +6,7 @@ class FragmentShader : public Shader
 {
 private:
 	void SetShaderSpecific(GLuint);
-	map<int,string> colorAttachments;
+	map<int, string> colorAttachments;
 public:
 	FragmentShader();
 	bool SetColorAttachment(string, int);

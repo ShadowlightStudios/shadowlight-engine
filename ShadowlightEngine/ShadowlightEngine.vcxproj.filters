@@ -46,6 +46,12 @@
     <ClCompile Include="Lump.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryShader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="errors.h">
@@ -103,6 +109,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="FragmentShader.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryShader.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
