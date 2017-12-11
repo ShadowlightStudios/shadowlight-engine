@@ -88,8 +88,10 @@ int ShaderManager::Create(const Lump& in)
 			i = shaders.Gen<FragmentShader>();
 			break;
 		}
-		i = shaders.Gen<FragmentShader>();
+
+		// Generate the shader
 		Shader* shader = shaders.Get(i);
+
 		// Load the shader while checking for errors
 		if (!shader->CreateShader(shaderFile, shad))
 		{
@@ -197,6 +199,64 @@ int ShaderManager::Create(const Lump& in)
 
 		// Now we have a shader!
 		break;
+	}
+	case LT_PROGRAM:
+	{
+		// Parse the metadata
+		doc.Parse(in.metadata.data());
+
+		// Check for a valid JSON object
+		if (!doc.IsObject())
+		{
+			// Raise an error, exit with -1
+			RaiseError("Lump %s\'s metadata is not a valid JSON object", in.name.data());
+			return -1;
+		}
+
+		// Make sure it has it's contents
+		if (!doc.HasMember("link"))
+		{
+			// Raise an error, exit with -1
+			RaiseError("Program lump %s does not have a list of links", in.name.data());
+			return -1;
+		}
+
+		// Create an empty program
+		int i = programs.Gen();
+		Program* prog = programs.Get(i);
+		Shader* shad;
+
+		for (Value::ConstValueIterator itr = doc["colorAttachments"].Begin();
+			itr != doc["colorAttachments"].End(); ++itr)
+		{
+			// Let's loop through and link all of the links
+			// First, find the pointer to the Shader
+			Lump* toLink = pEngine->lumpManager->FindLump(in, itr->GetString());
+
+			// Make sure that we have a valid one
+			if (!toLink)
+			{
+				// Otherwise, raise and exit
+				RaiseError("Lump path %s does not exist", itr->GetString());
+				return -1;
+			}
+
+			// Make sure that this shader is loaded before we try to link it
+			pEngine->lumpManager->LoadLump(*toLink);
+
+			// Let's grab the index of the Lump we're linking
+			i = toLink->index;
+
+			// Make sure that we have a valid index
+			if (!(shad = shaders.Get(i)))
+			{
+				// If we don't, exit with an error
+				RaiseError("Shader lump %s does not exist", toLink->name.data());
+				return -1;
+			}
+			// Now, we can link it
+			prog->Link(*shad);
+		}
 	}
 	default:
 	{

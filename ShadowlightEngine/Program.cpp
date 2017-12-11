@@ -1,176 +1,111 @@
 #include "stdafx.h"
 #include "Program.h"
 
-
-
-Program::Program(GLuint vertexID, GLuint fragmentID)
+Program::Program()
 {
-	GLint status;
-	GLint length;
+	bMappable = false;
+	iResource = 0;
+	return;
+}
 
-	// Create a program
-	programID = glCreateProgram();
-
-	usable = false;
+// Generate a program
+void Program::CreateProgram()
+{
+	iResource = glCreateProgram();
 
 	// Check for errors
-	if (!programID)
+	if (!iResource)
 	{
 		RaiseError("Failed to generate program", "");
 		return;
 	}
 
-	// Attach the vertex and fragment shaders
-	glAttachShader(programID, vertexID);
-	glAttachShader(programID, fragmentID);
-
-	// And link
-	glLinkProgram(programID);
-
-	// Check for errors
-	glGetProgramiv(programID, GL_LINK_STATUS, &status);
-	if (!status)
-	{
-		GLchar *buf;
-		// Get the error log
-		glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &length);
-		// Create a buffer
-		buf = new GLchar[length + 1];
-		buf[length] = '\0';
-		// Get the log text
-		glGetProgramInfoLog(programID, length, &status, buf);
-		// Display, cleanup, raise error, and exit
-		glDeleteProgram(programID);
-		printf("%s\n", buf);
-		RaiseError("Failed to link program", "");
-		return;
-	}
-
-	// Find all of the uniform addresses
-	m = glGetUniformLocation(programID, "mMatrix");
-	v = glGetUniformLocation(programID, "vMatrix");
-	p = glGetUniformLocation(programID, "pMatrix");
-	mv = glGetUniformLocation(programID, "mvMatrix");
-	mvp = glGetUniformLocation(programID, "mvpMatrix");
-	vp = glGetUniformLocation(programID, "vpMatrix");
-	c = glGetUniformLocation(programID, "colorMatrix");
-	n = glGetUniformLocation(programID, "normalMatrix");
-	t = glGetUniformLocation(programID, "tex");
-
-	// Set matrices to identity
-	modelMatrix = glm::mat4(1.0);
-	viewMatrix = glm::mat4(1.0);
-	projectionMatrix = glm::mat4(1.0);
-	colorMatrix = glm::mat4(1.0);
-	normalMatrix = glm::mat3(1.0);
-
-	// Set usable and exit
-	usable = true;
-	return;
+	bMappable = true;
+	bDirty = false;
 }
 
-void Program::Cleanup()
+// Link a shader to the program
+void Program::Link(Shader& toLink)
 {
-	if (usable)
+	if (bMappable)
 	{
-		glDeleteProgram(programID);
-		programID = 0;
-		usable = false;
+		toLink.BindToProgram(iResource);
+		bDirty = true;
 	}
 }
 
-void Program::WriteMatrices()
+// Sets up and links the shader
+void Program::Clean()
 {
-	if (usable)
+	if (bMappable)
 	{
-		// Keep a temp for combined matrices
-		glm::mat4 temp;
-		// Write model matrix
-		if (m != -1) {
-			glUniformMatrix4fv(m, 1, GL_TRUE, glm::value_ptr(modelMatrix));
-		}
-		// Write modelview matrix
-		if (mv != -1) {
-			temp = viewMatrix*modelMatrix;
-			glUniformMatrix4fv(mv, 1, GL_TRUE, glm::value_ptr(temp));
-		}
-		// Write view matrix
-		if (v != -1) {
-			glUniformMatrix4fv(v, 1, GL_TRUE, glm::value_ptr(viewMatrix));
-		}
-		// Write viewprojection matrix
-		if (vp != -1) {
-			temp = projectionMatrix*viewMatrix;
-			glUniformMatrix4fv(vp, 1, GL_TRUE, glm::value_ptr(temp));
-		}
-		// Write projection matrix
-		if (p != -1) {
-			glUniformMatrix4fv(p, 1, GL_TRUE, glm::value_ptr(projectionMatrix));
-		}
-		// Write modelviewprojection matrix
-		// Calculate the mvp now; we might need it for the normal matrix
-		temp = projectionMatrix*viewMatrix*modelMatrix;
-		if (mvp != -1) {
-			glUniformMatrix4fv(mvp, 1, GL_TRUE, glm::value_ptr(temp));
-		}
-		// Write color matrix
-		if (c != -1) {
-			glUniformMatrix4fv(vp, 1, GL_TRUE, glm::value_ptr(colorMatrix));
-		}
-		// Write normal matrix
-		if (n != -1) {
-			temp = glm::transpose(glm::inverse(glm::mat3(temp)));
-			glUniformMatrix4fv(vp, 1, GL_TRUE, glm::value_ptr(temp));
-		}
-		// Finally, write texture
-		if (t != -1)
+		// If there's nothing to do, then exit
+		if (!bDirty)
+			return;
+		glLinkProgram(iResource);
+
+		GLint status;
+		GLint length;
+
+		// Check for errors
+		glGetProgramiv(iResource, GL_LINK_STATUS, &status);
+		if (!status)
 		{
-			glUniform1i(t, 0);
+			GLchar *buf;
+
+			// Get the error log
+			glGetProgramiv(iResource, GL_INFO_LOG_LENGTH, &length);
+
+			// Create a buffer
+			buf = new GLchar[length + 1];
+			buf[length] = '\0';
+
+			// Get the log text
+			glGetProgramInfoLog(iResource, length, &status, buf);
+
+			// Display, cleanup, raise error, and exit
+			glDeleteProgram(iResource);
+
+			printf("%s\n", buf);
+
+			RaiseError("Failed to link program", "");
+
+			return;
 		}
+
+		// Otherwise, we're clean
+		bDirty = false;
 	}
 }
 
-void Program::UseProgram()
+// Bind a program
+void Program::Bind()
 {
-	if (usable)
+	if (bMappable && !bMapped)
 	{
-		glUseProgram(programID);
+		if (bMapped)
+			return;
+		glUseProgram(iResource);
+		bMapped = true;
+	}
+	else
+	{
+		RaiseError("Attempt to bind unmappable program", "");
 	}
 }
 
-void Program::SetModelMatrix(glm::mat4 in)
+// Releases the program
+void Program::Release()
 {
-	if (usable)
+	if (bMappable)
 	{
-		modelMatrix = in;
-	}
-}
-
-void Program::SetViewMatrix(glm::mat4 in)
-{
-	if (usable)
-	{
-		viewMatrix = in;
-	}
-}
-
-void Program::SetProjectionMatrix(glm::mat4 in)
-{
-	if (usable)
-	{
-		projectionMatrix = in;
-	}
-}
-
-void Program::SetColorMatrix(glm::mat4 in)
-{
-	if (usable)
-	{
-		colorMatrix = in;
+		glDeleteProgram(iResource);
+		iResource = 0;
+		bMappable = false;
 	}
 }
 
 Program::~Program()
 {
-	Cleanup();
+	Release();
 }

@@ -8,6 +8,33 @@
 #include "SoundManager.h"
 #include "TextureManager.h"
 
+ShadowlightEngine::ShadowlightEngine()
+{
+	luaManager = new LuaManager();
+	lumpManager = new LumpManager();
+	openglManager = new OpenGLManager();
+	shaderManager = new ShaderManager();
+	soundManager = new SoundManager();
+	textureManager = new TextureManager();
+
+	luaManager->RegisterWithEngine(this);
+	lumpManager->RegisterWithEngine(this);
+	openglManager->RegisterWithEngine(this);
+	shaderManager->RegisterWithEngine(this);
+	soundManager->RegisterWithEngine(this);
+	textureManager->RegisterWithEngine(this);
+}
+
+ShadowlightEngine::~ShadowlightEngine()
+{
+	delete luaManager;
+	delete lumpManager;
+	delete openglManager;
+	delete shaderManager;
+	delete soundManager;
+	delete textureManager;
+}
+
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
@@ -17,20 +44,6 @@ int main(int argc, char **argv)
 	glutCreateWindow("OpenGL First Window");
 
 	ShadowlightEngine sle;
-	
-	sle.luaManager = new LuaManager();
-	sle.lumpManager = new LumpManager();
-	sle.openglManager = new OpenGLManager();
-	sle.shaderManager = new ShaderManager();
-	sle.soundManager = new SoundManager();
-	sle.textureManager = new TextureManager();
-
-	sle.luaManager->RegisterWithEngine(&sle);
-	sle.lumpManager->RegisterWithEngine(&sle);
-	sle.openglManager->RegisterWithEngine(&sle);
-	sle.shaderManager->RegisterWithEngine(&sle);
-	sle.soundManager->RegisterWithEngine(&sle);
-	sle.textureManager->RegisterWithEngine(&sle);
 
 	string fileName;
 

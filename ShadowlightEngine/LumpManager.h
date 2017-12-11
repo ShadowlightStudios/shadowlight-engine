@@ -15,6 +15,9 @@ public:
 	void Cleanup();
 	bool EnterLump(const Lump&);
 	void LoadLumpFile(string);
-	Manager* ManagerFromLumpType(const Lump&);
+	Lump* FindLump(const Lump&, string) const;
+	int LoadLump(Lump&);
+
+	Manager* ManagerFromLumpType(const Lump&) const;
 	~LumpManager();
 };

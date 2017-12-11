@@ -14,7 +14,7 @@ protected:
 	uint32_t bMappable : 1;
 
 	std::shared_ptr<void> pCPUDataCopy; //CPU side copy of this iResource's data.
-	uint32_t bCPUDataDirty : 1; //this iResource is "dirty" when the CPU data changes, signaling that it should be re-uploaded to the GPU
+	uint32_t bDirty : 1; //this iResource is "dirty" when the CPU data changes, signaling that it should be re-uploaded to the GPU
 public:
 	GPUResource();
 	~GPUResource();

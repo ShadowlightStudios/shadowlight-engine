@@ -2,8 +2,11 @@
 #include "Manager.h"
 #include "stdafx.h"
 
-struct ShadowlightEngine
+class ShadowlightEngine
 {
+public:
+	ShadowlightEngine();
+	~ShadowlightEngine();
 	LuaManager *luaManager;
 	LumpManager *lumpManager;
 	OpenGLManager *openglManager;

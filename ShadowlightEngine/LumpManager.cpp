@@ -136,6 +136,187 @@ void LumpManager::LoadLumpFile(string filename)
 	return;
 }
 
+// Finds a sublump or lump within the lump tree
+Lump* LumpManager::FindLump(const Lump& root, string name) const
+{
+	// Let's start by attempting to find it as a sublump
+	const Lump* ptr = &root;
+
+	// Map iterator
+	map<string, Lump>::const_iterator iter;
+
+	// eND oF sTRING
+	bool eos = false;
+
+	// Markers in the string
+	int begin = 0;
+	int end = 0;
+
+	// Start the search:
+	while (!eos && ptr)
+	{
+		// Find the first dot (.)
+		// If we find a non-underscore or alphanumeric character,
+		// raise an error
+		end = begin;
+		while (true)
+		{
+			end++;
+
+			// If we've hit the end, break while setting the end of string
+			if (!ptr->name[end])
+			{
+				eos = true;
+				break;
+			}
+
+			// Break if we've hit a '.'
+			if (ptr->name[end] == '.')
+			{
+				// Break;  we've found this name
+				break;
+			}
+
+			if (ptr->name[end] != '_' || !isalnum(ptr->name[end]))
+			{
+				// Raise an error, return
+				RaiseError("Invalid lump directory \"%s\"", name.data());
+				return NULL;
+			}
+		}
+
+		// Navigate the tree
+		iter = ptr->subLumps.find(name.substr(begin, end - begin));
+		// Make sure that we actually found it
+		if (iter == ptr->subLumps.end())
+			ptr = NULL;
+		ptr = &(iter->second);
+
+		// Set the start as the end past the dot for the next round
+		begin = end + 2;
+	}
+
+	// If we've come this far with a valid pointer, we can return it
+	if(ptr) return (Lump*) ptr;
+	
+	// But otherwise, we're going to need to do some more searching
+	// Start at the base by signalling a NULL pointer
+	ptr = NULL;
+
+	// eND oF sTRING
+	eos = false;
+
+	// Markers in the string
+	begin = 0;
+	end = 0;
+
+	// Start the search:
+	while (!eos)
+	{
+		// Find the first dot (.)
+		// If we find a non-underscore or alphanumeric character,
+		// raise an error
+		end = begin;
+		while (true)
+		{
+			end++;
+
+			// If we've hit the end, break while setting the end of string
+			if (!ptr->name[end])
+			{
+				eos = true;
+				break;
+			}
+
+			// Break if we've hit a '.'
+			if (ptr->name[end] == '.')
+			{
+				// Break;  we've found this name
+				break;
+			}
+
+			if (ptr->name[end] != '_' && !isalnum(ptr->name[end]))
+			{
+				// Raise an error, return
+				RaiseError("Invalid lump directory \"%s\"", name.data());
+				return NULL;
+			}
+		}
+
+		// Navigate the tree
+		if (ptr)
+		{
+			iter = ptr->subLumps.find(name.substr(begin, end - begin));
+			// If we've hit a dead end, exit with a NULL pointer
+			if (iter == ptr->subLumps.end())
+			{
+				ptr = NULL;
+				break;
+			}
+		}
+		else
+		{
+			iter = lumps.find(name.substr(begin, end - begin));
+			// If we've hit a dead end, exit with a NULL pointer
+			if (iter == lumps.end())
+			{
+				break;
+			}
+		}
+		// Navigate the tree
+		ptr = &(iter->second);
+
+		// Set the start as the end past the dot for the next round
+		begin = end + 2;
+	}
+	// Let's return whatever we have now
+	return (Lump*) ptr;
+}
+
+// Loads a lump that has been iniatialized with metadata, name, and type,
+// this function returns it's index
+int LumpManager::LoadLump(Lump& in)
+{
+	// First, let's make sure that it's not already loaded
+	if (in.loaded) return in.index;
+
+	// Let's figure out which Manager it's from
+	Manager* man = this->ManagerFromLumpType(in);
+
+	// Make sure that we have a valid Manager
+	if (!man)
+	{
+		// If not, exit with an error
+		RaiseError("Lump %s doesn\'t have a valid Manager", in.name.data());
+		return -1;
+	}
+
+	// Let's load it!
+	in.index = man->Create(in);
+
+	// If we've failed to load for some reason, exit with an error and a -1
+	if (in.index == -1)
+	{
+		RaiseError("Failed to load lump %s", in.name.data());
+		return -1;
+	}
+
+	// Now, do a recursive loading of the sub-lumps
+	for (map<string, Lump>::iterator iter = in.subLumps.begin();
+		iter != in.subLumps.end();
+		++iter)
+	{
+		LoadLump(iter->second);
+	}
+
+	// We've loaded!
+	in.loaded = true;
+
+	// Otherwise, we're done!
+	// Exit with the index
+	return in.index;
+}
+
 // Just exits; nothing to do
 void LumpManager::Cleanup()
 {
@@ -156,7 +337,7 @@ bool LumpManager::EnterLump(const Lump& lumpIn)
 		return false;
 }
 
-Manager* LumpManager::ManagerFromLumpType(const Lump& in)
+Manager* LumpManager::ManagerFromLumpType(const Lump& in) const
 {
 	// Let's do a switch on the type to get the right manager for it
 	switch (in.contentType)
