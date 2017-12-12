@@ -34,9 +34,6 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="AssetArray.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="FragmentShader.cpp">
       <Filter>Source</Filter>
     </ClCompile>

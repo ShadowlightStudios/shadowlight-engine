@@ -166,20 +166,6 @@ void Texture::Bind()
 	}
 }
 
-// Bind to a specific texture binding point
-void Texture::BindIndexed(int index)
-{
-	if (bMappable)
-	{
-		// Bind to the specific index
-		glActiveTexture(GL_TEXTURE + index);
-		glBindTexture(iBindPoint, iResource);
-
-		bBound = true;
-		iBindPoint = GL_TEXTURE_2D;
-	}
-}
-
 void Texture::Release()
 {
 	if (bMappable)

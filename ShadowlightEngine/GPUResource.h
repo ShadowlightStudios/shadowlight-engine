@@ -20,6 +20,5 @@ public:
 	~GPUResource();
 
 	virtual void Bind() = 0;
-	virtual void BindIndexed(int) = 0;
 	virtual void Release() = 0;
 };

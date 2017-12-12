@@ -19,7 +19,6 @@ public:
 	GLuint GetHeight() const;
 
 	void Bind();
-	void BindIndexed(int);
 
 	virtual void Release() override;
 };
