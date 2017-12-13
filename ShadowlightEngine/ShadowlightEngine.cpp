@@ -44,10 +44,11 @@ int main(int argc, char **argv)
 	glutCreateWindow("OpenGL First Window");
 
 	ShadowlightEngine sle;
-
 	string fileName;
 
 	fileName = "C:\\Marcus\\Dropbox\\The_Way_Back\\ShadowlightEngine\\v1\\ShadowlightEngine\\Debug\\TestLump.lmp";
+	sle.lumpManager->LoadLumpFile(fileName);
+
 
 	// Initialize GLEW
 	glewInit();

@@ -1,10 +1,15 @@
 #pragma once
-#include "VertexShader.h"
+#include "Shader.h"
+#include <list>
 
-class GeometryShader : public VertexShader
+class GeometryShader : public Shader
 {
+protected:
+	void SetShaderSpecific(GLuint);
+	list<string> xfbVaryings;
 public:
 	GeometryShader();
+	bool SetXFBVarying(string);
 	~GeometryShader();
 };
 

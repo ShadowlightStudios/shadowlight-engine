@@ -143,7 +143,43 @@ int ShaderManager::Create(const Lump& in)
 				dynamic_cast<VertexShader*>(shader)->SetAttribute(itr->value.GetString(), atoi(itr->name.GetString()));
 			}
 
-			// Exit the loop
+			// Don't break, we need to check for transform feedback
+		}
+		case GL_GEOMETRY_SHADER:
+		{
+			// Let's load the xfb varyings
+			// Check for them
+			if (!doc.HasMember("xfbVaryings"))
+			{
+				// It's okay; some shaders can have no attributes
+				// exit the loop
+				break;
+			}
+
+			// Make sure that it's an object
+			if (!doc["xfbVaryings"].IsArray())
+			{
+				// Raise an error; exit with -1
+				RaiseError("Vertex/geometry shader lump %s has a non-array transform feedback varying list", in.name.data());
+				return -1;
+			}
+
+			// Iterate over the xfbVaryings
+			for (Value::ConstValueIterator itr = doc["xfbVaryings"].Begin();
+				itr != doc["xfbVaryings"].End(); ++itr)
+			{
+				// Make sure that the value is a string
+				if (!itr->IsString())
+				{
+					// Raise an error; exit with -1
+					RaiseError("Vertex/geometry shader lump %s has a non-string transform feedback varying", in.name.data());
+					return -1;
+				}
+
+				// Write the new attribute
+				dynamic_cast<GeometryShader*>(shader)->SetXFBVarying(itr->GetString());
+			}
+			// Now we can break
 			break;
 		}
 		case GL_FRAGMENT_SHADER:
@@ -226,8 +262,8 @@ int ShaderManager::Create(const Lump& in)
 		Program* prog = programs.Get(i);
 		Shader* shad;
 
-		for (Value::ConstValueIterator itr = doc["colorAttachments"].Begin();
-			itr != doc["colorAttachments"].End(); ++itr)
+		for (Value::ConstValueIterator itr = doc["link"].Begin();
+			itr != doc["link"].End(); ++itr)
 		{
 			// Let's loop through and link all of the links
 			// First, find the pointer to the Shader
