@@ -38,7 +38,7 @@ void LumpManager::LoadLumpFile(string filename)
 			ch = fgetc(f);
 
 			// Append it to the lump name
-			if (ch != '\0 || ch != EOF)
+			if (ch != '\0' || ch != EOF)
 			{
 				printf("%c", ch);
 				newLump.name += ch;
