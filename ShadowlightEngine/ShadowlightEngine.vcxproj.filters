@@ -25,9 +25,6 @@
     <ClCompile Include="ShadowlightEngine.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -49,6 +46,13 @@
     <ClCompile Include="GeometryShader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="GPUBuffer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="errors.h">
@@ -114,6 +118,10 @@
     <ClInclude Include="GeometryShader.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="GPUBuffer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">

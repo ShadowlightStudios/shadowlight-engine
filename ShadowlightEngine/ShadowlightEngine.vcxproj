@@ -131,6 +131,8 @@
     <ClCompile Include="errors.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
+    <ClCompile Include="GPUBuffer.cpp" />
+    <ClCompile Include="GPUMesh.cpp" />
     <ClCompile Include="GPUResource.cpp" />
     <ClCompile Include="LuaManager.cpp" />
     <ClCompile Include="Lump.cpp" />
@@ -150,6 +152,8 @@
     <ClInclude Include="errors.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="GeometryShader.h" />
+    <ClInclude Include="GPUBuffer.h" />
+    <ClInclude Include="GPUMesh.h" />
     <ClInclude Include="GPUResource.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="lua.hpp" />
