@@ -1,6 +1,7 @@
 #pragma once
 #include "GPUResource.h"
 #include "GPUBuffer.h"
+#include "Program.h"
 #include "stdafx.h"
 
 struct VertexData
@@ -72,8 +73,9 @@ public:
 	GPUMesh();
 	~GPUMesh();
 
-	void Create(const char* VertexShader, const char* FragmentShader, VertexData* Vertices,
-		const VertexInputElement* InputElements,uint32_t NumElements, IndexData* Indices = nullptr);
+	void Create(Program* ShaderProgram,VertexData* Vertices,
+		const VertexInputElement* InputElements,uint32_t NumElements,
+		IndexData* Indices = nullptr);
 
 	void Render();
 private:
@@ -83,10 +85,7 @@ private:
 	uint32_t NumIndices;
 	uint32_t NumVertices;
 
-	std::unique_ptr<GPUBuffer> VertexBuffer;
-	std::unique_ptr<GPUBuffer> IndexBuffer;
-
-	std::unique_ptr<Shader> VertexShader;
-	std::unique_ptr<Shader> FragmentShader;
-	std::unique_ptr<Program> ShaderProgram;
+	shared_ptr<GPUBuffer> VertexBuffer; //required for rendering
+	shared_ptr<GPUBuffer> IndexBuffer;  //optional for rendering
+	shared_ptr<Program>   ShaderProgram; //required for rendering
 };

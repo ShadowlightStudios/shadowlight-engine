@@ -1,6 +1,5 @@
 #pragma once
-#include <memory>
-#include "Dependencies/glew/glew.h"
+#include "stdafx.h"
 
 class GPUResource
 {

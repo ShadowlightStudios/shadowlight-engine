@@ -4,31 +4,16 @@
     <ClCompile Include="errors.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="LuaManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="LumpManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Program.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="ShadowlightEngine.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="FragmentShader.cpp">
@@ -40,19 +25,15 @@
     <ClCompile Include="Lump.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="VertexShader.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="GeometryShader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="GPUBuffer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Headers</Filter>
+    <ClCompile Include="GPUMesh.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="GPUMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="errors.h">
@@ -61,40 +42,19 @@
     <ClInclude Include="lua.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="LuaManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="LumpManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Program.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="ShadowlightEngine.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Manager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="AssetArray.h">
@@ -112,16 +72,15 @@
     <ClInclude Include="FragmentShader.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="VertexShader.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="GeometryShader.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GPUBuffer.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="GPUMesh.h" />
+    <ClInclude Include="GPUMesh.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">

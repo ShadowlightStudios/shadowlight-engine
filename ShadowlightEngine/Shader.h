@@ -11,14 +11,11 @@ protected:
 public:
 	Shader();
 	~Shader();
+
 	bool CreateShader(const char*, GLenum);
 	void BindToProgram(GLuint);
 	virtual void Release() override;
-	GLuint GetID() {
-		return bMappable? iResource:0;
-	};
 
 	// We don't need to ever bind a raw shader; just return in all cases
-	virtual void Bind() override; //tweaked to be override of virtual function
-	void BindIndexed(int) { return; };
+	virtual void Bind() override; //tweaked to be override of virtual functionwhy
 };
