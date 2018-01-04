@@ -2,10 +2,11 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 using namespace std;
 
-#include "Dependencies\glew\glew.h"
-#include "Dependencies\freeglut\freeglut.h"
+//#include "Dependencies\glew\glew.h"
+//#include "Dependencies\freeglut\freeglut.h"
 #include "Dependencies\openal\al.h"
 #include "Dependencies\openal\alc.h"
 #include "Dependencies\glm\glm.hpp"
@@ -14,11 +15,8 @@ using namespace std;
 #include "errors.h"
 #include "lua.hpp"
 
-#include "LuaManager.h"
-#include "LumpManager.h"
-#include "OpenGLManager.h"
-#include "ShaderManager.h"
-#include "SoundManager.h"
-#include "TextureManager.h"
-
 #include "GPUResource.h"
+
+#include <SDL.h>
+#include <GL\glew.h>
+#include <SDL_opengl.h>
