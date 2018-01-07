@@ -3,7 +3,7 @@
 
 ShadowlightEngine::ShadowlightEngine()
 {
-	
+	EngineRunning = true;
 }
 
 ShadowlightEngine::~ShadowlightEngine()
@@ -13,7 +13,14 @@ ShadowlightEngine::~ShadowlightEngine()
 
 bool ShadowlightEngine::InitializeEngine(const char* AppName, int width, int height, bool fullscreen)
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); //24 bit depth buffer
+
+	SDL_Init(SDL_INIT_VIDEO);
 
 	WindowWidth = width;
 	WindowHeight = height;
@@ -21,22 +28,18 @@ bool ShadowlightEngine::InitializeEngine(const char* AppName, int width, int hei
 
 	if (Fullscreen)
 	{
-		Window = SDL_CreateWindow(AppName, 0, 0, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+		Window = SDL_CreateWindow(AppName, 200, 200, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
 	}
 	else
 	{
-		Window = SDL_CreateWindow(AppName, 0, 0, width, height, SDL_WINDOW_SHOWN);
+		Window = SDL_CreateWindow(AppName, 200, 200, width, height,SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 	}
-
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5); //currently setting to 4.5
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
 	GLContext = SDL_GL_CreateContext(Window);
 
 	if (!GLContext)
 	{
-		throw std::exception("unable to initialize OpenGL");
+		throw std::exception("Unable to create OpenGL context");
 	}
 	else
 	{
