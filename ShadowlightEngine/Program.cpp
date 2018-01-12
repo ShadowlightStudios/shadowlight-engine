@@ -21,7 +21,7 @@ void Program::CreateProgram()
 	}
 
 	bMappable = true;
-	bDirty = false;
+	bDirty = true;
 }
 
 // Link a shader to the program
@@ -81,12 +81,12 @@ void Program::Clean()
 // Bind a program
 void Program::Bind()
 {
-	if (bMappable && !bMapped)
+	if (bMappable)
 	{
 		if (bMapped)
 			return;
 		glUseProgram(iResource);
-		bMapped = true;
+		//bMapped = true;
 	}
 	else
 	{

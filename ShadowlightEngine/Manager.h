@@ -13,5 +13,6 @@ public:
 	virtual void Cleanup() { RaiseError("WIP", ""); }
 	virtual bool DeleteItem(int) { RaiseError("WIP", ""); return false; }
 	virtual int Create(const Lump&) { RaiseError("WIP", ""); return -1; }
+	virtual void Bind(int) { RaiseError("WIP", ""); }
 	virtual ~Manager() {};
 };

@@ -16,6 +16,7 @@ public:
 	bool EnterLump(const Lump&);
 	void LoadLumpFile(string);
 	Lump* FindLump(const Lump&, string) const;
+	Lump* FindLump(string) const;
 	int LoadLump(Lump&);
 
 	Manager* ManagerFromLumpType(const Lump&) const;

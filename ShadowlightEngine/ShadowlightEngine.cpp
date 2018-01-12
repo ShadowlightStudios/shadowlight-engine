@@ -35,6 +35,9 @@ ShadowlightEngine::~ShadowlightEngine()
 	delete textureManager;
 }
 
+Lump* lProgram;
+ShadowlightEngine* sle;
+
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
@@ -43,17 +46,23 @@ int main(int argc, char **argv)
 	glutInitWindowSize(800, 600); //optional
 	glutCreateWindow("OpenGL First Window");
 
-	ShadowlightEngine sle;
-	string fileName;
-
-	fileName = "C:\\Marcus\\Dropbox\\The_Way_Back\\ShadowlightEngine\\v1\\ShadowlightEngine\\Debug\\TestLump.lmp";
-	sle.lumpManager->LoadLumpFile(fileName);
-
-
 	// Initialize GLEW
 	glewInit();
 
+	string fileName;
+
+	sle = new ShadowlightEngine;
+
+	fileName = "..\\Debug\\TestLump.lmp";
+	sle->lumpManager->LoadLumpFile(fileName);
+
+	lProgram = sle->lumpManager->FindLump("testProg");
+	sle->lumpManager->LoadLump(*lProgram);
+	cout << lProgram->index << endl;
+
 	glutMainLoop();
+
+	delete sle;
 
 	return 0;
 }

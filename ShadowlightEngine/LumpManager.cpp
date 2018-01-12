@@ -12,7 +12,7 @@ void LumpManager::LoadLumpFile(string filename)
 	f = fopen(filename.data(), "rb");
 
 	// If the file open failed
-	if (f == 0)
+	if (!f)
 	{
 		// Raise an error and exit
 		RaiseError("Failed to load file %s", filename.data());
@@ -38,7 +38,7 @@ void LumpManager::LoadLumpFile(string filename)
 			ch = fgetc(f);
 
 			// Append it to the lump name
-			if (ch != '\0 || ch != EOF)
+			if (ch != '\0' && ch != EOF)
 			{
 				printf("%c", ch);
 				newLump.name += ch;
@@ -58,6 +58,8 @@ void LumpManager::LoadLumpFile(string filename)
 		if (newLump.name.length() == 0 && currentParent != NULL)
 		{
 			currentParent = currentParent->parent;
+			// Continue onto the next lump
+			continue;
 		}
 
 		printf("\n");
@@ -83,7 +85,7 @@ void LumpManager::LoadLumpFile(string filename)
 			ch = fgetc(f);
 
 			// Append it to the lump name
-			if (ch != '\0' || ch != EOF)
+			if (ch != '\0' && ch != EOF)
 			{
 				printf("%c", ch);
 				newLump.metadata += ch;
@@ -164,20 +166,20 @@ Lump* LumpManager::FindLump(const Lump& root, string name) const
 			end++;
 
 			// If we've hit the end, break while setting the end of string
-			if (!ptr->name[end])
+			if (end >= name.length())
 			{
 				eos = true;
 				break;
 			}
 
 			// Break if we've hit a '.'
-			if (ptr->name[end] == '.')
+			if (name[end] == '.')
 			{
 				// Break;  we've found this name
 				break;
 			}
 
-			if (ptr->name[end] != '_' || !isalnum(ptr->name[end]))
+			if (name[end] != '_' && !isalnum(name[end]))
 			{
 				// Raise an error, return
 				RaiseError("Invalid lump directory \"%s\"", name.data());
@@ -186,10 +188,14 @@ Lump* LumpManager::FindLump(const Lump& root, string name) const
 		}
 
 		// Navigate the tree
-		iter = ptr->subLumps.find(name.substr(begin, end - begin));
+		string toNavigate(name.substr(begin, end - begin));
+		iter = ptr->subLumps.find(toNavigate);
 		// Make sure that we actually found it
 		if (iter == ptr->subLumps.end())
+		{
 			ptr = NULL;
+			break;
+		}
 		ptr = &(iter->second);
 
 		// Set the start as the end past the dot for the next round
@@ -200,15 +206,23 @@ Lump* LumpManager::FindLump(const Lump& root, string name) const
 	if(ptr) return (Lump*) ptr;
 	
 	// But otherwise, we're going to need to do some more searching
-	// Start at the base by signalling a NULL pointer
-	ptr = NULL;
+	return this->FindLump(name);
+}
+
+Lump* LumpManager::FindLump(string name) const
+{
+	// Let's start by attempting to find it as a sublump
+	const Lump* ptr = NULL;
+
+	// Map iterator
+	map<string, Lump>::const_iterator iter;
 
 	// eND oF sTRING
-	eos = false;
+	bool eos = false;
 
 	// Markers in the string
-	begin = 0;
-	end = 0;
+	int begin = 0;
+	int end = 0;
 
 	// Start the search:
 	while (!eos)
@@ -222,20 +236,20 @@ Lump* LumpManager::FindLump(const Lump& root, string name) const
 			end++;
 
 			// If we've hit the end, break while setting the end of string
-			if (!ptr->name[end])
+			if (end >= name.length())
 			{
 				eos = true;
 				break;
 			}
 
 			// Break if we've hit a '.'
-			if (ptr->name[end] == '.')
+			if (name[end] == '.')
 			{
 				// Break;  we've found this name
 				break;
 			}
 
-			if (ptr->name[end] != '_' && !isalnum(ptr->name[end]))
+			if (name[end] != '_' && !isalnum(name[end]))
 			{
 				// Raise an error, return
 				RaiseError("Invalid lump directory \"%s\"", name.data());
@@ -244,9 +258,10 @@ Lump* LumpManager::FindLump(const Lump& root, string name) const
 		}
 
 		// Navigate the tree
+		string toNavigate(name.substr(begin, end - begin));
 		if (ptr)
 		{
-			iter = ptr->subLumps.find(name.substr(begin, end - begin));
+			iter = ptr->subLumps.find(toNavigate);
 			// If we've hit a dead end, exit with a NULL pointer
 			if (iter == ptr->subLumps.end())
 			{
@@ -256,7 +271,7 @@ Lump* LumpManager::FindLump(const Lump& root, string name) const
 		}
 		else
 		{
-			iter = lumps.find(name.substr(begin, end - begin));
+			iter = lumps.find(toNavigate);
 			// If we've hit a dead end, exit with a NULL pointer
 			if (iter == lumps.end())
 			{
@@ -270,7 +285,7 @@ Lump* LumpManager::FindLump(const Lump& root, string name) const
 		begin = end + 2;
 	}
 	// Let's return whatever we have now
-	return (Lump*) ptr;
+	return (Lump*)ptr;
 }
 
 // Loads a lump that has been iniatialized with metadata, name, and type,
@@ -314,6 +329,7 @@ int LumpManager::LoadLump(Lump& in)
 
 	// Otherwise, we're done!
 	// Exit with the index
+	cout << "Loaded lump " << in.name << " with index " << in.index << endl;
 	return in.index;
 }
 

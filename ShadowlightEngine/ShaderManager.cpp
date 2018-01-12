@@ -67,7 +67,7 @@ int ShaderManager::Create(const Lump& in)
 		if (!doc.HasMember("file"))
 		{
 			// Raise an error, exit with -1
-			RaiseError("Shader lump %s does not have a file name", in.name.data());
+			RaiseError("Shader lump %s does not have a file", in.name.data());
 			return -1;
 		}
 
@@ -258,9 +258,12 @@ int ShaderManager::Create(const Lump& in)
 		}
 
 		// Create an empty program
-		int i = programs.Gen();
-		Program* prog = programs.Get(i);
+		int index = programs.Gen();
+		int i;
+		Program* prog = programs.Get(index);
 		Shader* shad;
+
+		prog->CreateProgram();
 
 		for (Value::ConstValueIterator itr = doc["link"].Begin();
 			itr != doc["link"].End(); ++itr)
@@ -293,6 +296,9 @@ int ShaderManager::Create(const Lump& in)
 			// Now, we can link it
 			prog->Link(*shad);
 		}
+		prog->Clean();
+		cout << "New program index " << index << " at lump " << in.name << endl;
+		return index;
 	}
 	default:
 	{
@@ -304,6 +310,15 @@ int ShaderManager::Create(const Lump& in)
 	// We've successfully generated a shader/program!
 	// Exit with the new index
 	return i;
+}
+
+void ShaderManager::Bind(int index)
+{
+	if (Program* prog = programs.Get(index))
+	{
+		cout << "Binding program " << index << endl;
+		prog->Bind();
+	}
 }
 
 void ShaderManager::Cleanup()

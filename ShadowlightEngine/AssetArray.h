@@ -70,7 +70,7 @@ int AssetArray<T>::Gen()
 	// If we've made it this far, then there are no free slots
 	// Push a new one
 	assetArray.push_back(new N);
-	return iLength;
+	return iLength++;
 }
 
 // Grabs a pointer to the asset at 'index'

@@ -14,6 +14,7 @@ public:
 	ShaderManager();
 	int Create(const Lump&);
 	void Cleanup();
+	void Bind(int);
 	~ShaderManager();
 };
 
