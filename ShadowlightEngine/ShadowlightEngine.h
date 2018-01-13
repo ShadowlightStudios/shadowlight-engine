@@ -1,5 +1,4 @@
 #pragma once
-#include "Manager.h"
 #include "stdafx.h"
 
 class ShadowlightEngine
@@ -7,10 +6,20 @@ class ShadowlightEngine
 public:
 	ShadowlightEngine();
 	~ShadowlightEngine();
-	LuaManager *luaManager;
-	LumpManager *lumpManager;
-	OpenGLManager *openglManager;
-	ShaderManager *shaderManager;
-	SoundManager *soundManager;
-	TextureManager *textureManager;
+
+	bool InitializeEngine(const char* AppName,int width, int height, bool fullscreen = false);
+
+	void Run();
+private:
+	uint32_t WindowWidth;
+	uint32_t WindowHeight;
+	uint32_t Fullscreen : 1;
+	uint32_t EngineRunning : 1;
+
+	SDL_Event SDLEvent;
+	SDL_Window* Window;
+	SDL_GLContext GLContext;
+
+	void BeginFrame();
+	void EndFrame();
 };
