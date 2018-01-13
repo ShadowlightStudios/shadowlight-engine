@@ -1,3 +1,6 @@
+#include "ShadowlightEngine.h"
+#include "stdafx.h"
+
 ShadowlightEngine::ShadowlightEngine()
 {
 	EngineRunning = true;
@@ -49,18 +52,6 @@ bool ShadowlightEngine::InitializeEngine(const char* AppName, int width, int hei
 
 		//Enable VSync
 		SDL_GL_SetSwapInterval(1); //set to 0 to disble VSync
-
-		float* VertexData = new float[9];
-
-		for (int i = 0; i < 9; ++i)
-		{
-			VertexData[i] = i;
-		}
-
-		GPUBuffer* pBuffer = new GPUBuffer();
-		pBuffer->Create(VERTEX_BUFFER, (sizeof(float) * 3) * 3, false, VertexData);
-		pBuffer->Bind();
-
 
 		return true;
 	}

@@ -6,6 +6,9 @@
 #include <memory>
 using namespace std;
 
+#define SUBSYSTEM_SDL2
+//#define SUBSYSTEM_GLFW
+
 //#include "Dependencies\glew\glew.h"
 //#include "Dependencies\freeglut\freeglut.h"
 #include "Dependencies\openal\al.h"
@@ -18,7 +21,9 @@ using namespace std;
 
 #include "GPUResource.h"
 
+#ifdef SUBSYSTEM_SDL2
 #include <SDL.h>
 #include <GL\glew.h>
 #include <SDL_opengl.h>
 #include <GL\GLU.h>
+#endif
