@@ -11,3 +11,8 @@ GPUResource::GPUResource()
 GPUResource::~GPUResource()
 {
 }
+
+GLuint GPUResource::GetResource() const
+{
+	return iResource;
+}

@@ -88,7 +88,7 @@ void Shader::BindToProgram(GLuint prog)
 {
 	glAttachShader(prog, iResource);
 	// Set shader-specific
-	SetShaderSpecific(prog);
+	//SetShaderSpecific(prog);
 }
 
 void Shader::Release()
@@ -100,6 +100,11 @@ void Shader::Release()
 		bMappable = false;
 		type = GL_NONE;
 	}
+}
+
+void Shader::Bind()
+{
+	//do nothing
 }
 
 Shader::~Shader()

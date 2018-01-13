@@ -26,7 +26,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -39,7 +39,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -77,10 +77,11 @@
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>Dependencies\glew-2.1.0-win32\glew-2.1.0\include;Dependencies\SDL2-devel-2.0.7-VC\SDL2-2.0.7\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>Dependencies\freeglut;Dependencies\openal;Dependencies\glew;Dependencies\lua\win32\lib\dll</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;OpenAL32.lib;lua5.1.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Dependencies\SDL2-devel-2.0.7-VC\SDL2-2.0.7\lib\x64;Dependencies\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;Dependencies\openal;Dependencies\lua\win32\lib\dll</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;OpenAL32.lib;lua5.1.lib;SDL2.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -88,14 +89,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Marcus\Dropbox\The_Way_Back\ShadowlightEngine\v1\ShadowlightEngine\ShadowlightEngine\Dependencies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Dependencies\glew-2.1.0-win32\glew-2.1.0\include;Dependencies\SDL2-devel-2.0.7-VC\SDL2-2.0.7\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;OpenAL32.lib;lua5.1.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>Dependencies\freeglut;Dependencies\openal;Dependencies\glew;Dependencies\lua\win32\lib\dll</AdditionalLibraryDirectories>
-      <TargetMachine>MachineX86</TargetMachine>
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -131,42 +132,31 @@
     <ClCompile Include="errors.cpp" />
     <ClCompile Include="FragmentShader.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
+    <ClCompile Include="GPUBuffer.cpp" />
+    <ClCompile Include="GPUMesh.cpp" />
     <ClCompile Include="GPUResource.cpp" />
-    <ClCompile Include="LuaManager.cpp" />
     <ClCompile Include="Lump.cpp" />
-    <ClCompile Include="LumpManager.cpp" />
-    <ClCompile Include="OpenGLManager.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShadowlightEngine.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetArray.h" />
     <ClInclude Include="errors.h" />
     <ClInclude Include="FragmentShader.h" />
     <ClInclude Include="GeometryShader.h" />
+    <ClInclude Include="GPUBuffer.h" />
+    <ClInclude Include="GPUMesh.h" />
     <ClInclude Include="GPUResource.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="lua.hpp" />
-    <ClInclude Include="LuaManager.h" />
     <ClInclude Include="Lump.h" />
-    <ClInclude Include="LumpManager.h" />
-    <ClInclude Include="Manager.h" />
-    <ClInclude Include="OpenGLManager.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShadowlightEngine.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
