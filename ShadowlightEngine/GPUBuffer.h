@@ -26,4 +26,6 @@ private:
 	uint32_t DynamicUsage : 1;
 
 	uint32_t BufferSize; //size in bytes
+
+	shared_ptr<void> CPUDataCopy;
 };
