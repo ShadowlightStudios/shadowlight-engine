@@ -1,68 +1,99 @@
-#include "stdafx.h"
-#include "ShadowlightEngine.h"
-
-#include "LuaManager.h"
-#include "LumpManager.h"
-#include "OpenGLManager.h"
-#include "ShaderManager.h"
-#include "SoundManager.h"
-#include "TextureManager.h"
-
 ShadowlightEngine::ShadowlightEngine()
 {
-	luaManager = new LuaManager();
-	lumpManager = new LumpManager();
-	openglManager = new OpenGLManager();
-	shaderManager = new ShaderManager();
-	soundManager = new SoundManager();
-	textureManager = new TextureManager();
-
-	luaManager->RegisterWithEngine(this);
-	lumpManager->RegisterWithEngine(this);
-	openglManager->RegisterWithEngine(this);
-	shaderManager->RegisterWithEngine(this);
-	soundManager->RegisterWithEngine(this);
-	textureManager->RegisterWithEngine(this);
+	EngineRunning = true;
 }
 
 ShadowlightEngine::~ShadowlightEngine()
 {
-	delete luaManager;
-	delete lumpManager;
-	delete openglManager;
-	delete shaderManager;
-	delete soundManager;
-	delete textureManager;
+
 }
 
-Lump* lProgram;
-ShadowlightEngine* sle;
-
-int main(int argc, char **argv)
+bool ShadowlightEngine::InitializeEngine(const char* AppName, int width, int height, bool fullscreen)
 {
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(500, 500);//optional
-	glutInitWindowSize(800, 600); //optional
-	glutCreateWindow("OpenGL First Window");
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
 
-	// Initialize GLEW
-	glewInit();
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); //24 bit depth buffer
 
-	string fileName;
+	SDL_Init(SDL_INIT_VIDEO);
 
-	sle = new ShadowlightEngine;
+	WindowWidth = width;
+	WindowHeight = height;
+	Fullscreen = fullscreen;
 
-	fileName = "..\\Debug\\TestLump.lmp";
-	sle->lumpManager->LoadLumpFile(fileName);
+	if (Fullscreen)
+	{
+		Window = SDL_CreateWindow(AppName, 200, 200, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
+	}
+	else
+	{
+		Window = SDL_CreateWindow(AppName, 200, 200, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+	}
 
-	lProgram = sle->lumpManager->FindLump("testProg");
-	sle->lumpManager->LoadLump(*lProgram);
-	cout << lProgram->index << endl;
+	GLContext = SDL_GL_CreateContext(Window);
 
-	glutMainLoop();
+	if (!GLContext)
+	{
+		throw std::exception("Unable to create OpenGL context");
+	}
+	else
+	{
+		glewExperimental = GL_TRUE;
+		GLenum glew_init = glewInit();
+		if (glew_init != GLEW_OK)
+		{
+			throw std::exception("unable to initialize GLEW");
+		}
 
-	delete sle;
+		//Enable VSync
+		SDL_GL_SetSwapInterval(1); //set to 0 to disble VSync
 
-	return 0;
+		float* VertexData = new float[9];
+
+		for (int i = 0; i < 9; ++i)
+		{
+			VertexData[i] = i;
+		}
+
+		GPUBuffer* pBuffer = new GPUBuffer();
+		pBuffer->Create(VERTEX_BUFFER, (sizeof(float) * 3) * 3, false, VertexData);
+		pBuffer->Bind();
+
+
+		return true;
+	}
+
+	return false;
+}
+
+//barebones implementation, this code (ShadowlightEngine::Run) will majorly change when we figure out more how people will be using the engine.
+//this is basically just here so that we can properly run *something* to test/build on.
+void ShadowlightEngine::Run()
+{
+	while (EngineRunning)
+	{
+		while (SDL_PollEvent(&SDLEvent) != 0)
+		{
+			if (SDLEvent.type == SDL_QUIT)
+			{
+				EngineRunning = false;
+			}
+		}
+
+		BeginFrame();
+		EndFrame();
+	}
+}
+
+void ShadowlightEngine::BeginFrame()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.100f, 0.149f, 0.255f, 1.0f);
+}
+
+void ShadowlightEngine::EndFrame()
+{
+	SDL_GL_SwapWindow(Window);
 }
