@@ -37,6 +37,9 @@ void GPUBuffer::Create(GPU_BUFFER_TYPE Type, uint32_t BufferSize, bool DynamicUs
 	if (pBufferData) //if pointer to buffer data is provided we can allocate GPU buffer memory here and send it the provided buffer data
 	{
 		glBufferData(iBindPoint, BufferSize, pBufferData, DynamicUsage ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+		CPUDataCopy = shared_ptr<void>(pBufferData);
+		bDirty = false;
+
 		GPUStorageAllocated = true;
 	}
 }
@@ -47,6 +50,7 @@ void GPUBuffer::Update(void* pData)
 	if (!GPUStorageAllocated)
 	{
 		glBufferData(iBindPoint, BufferSize, pData, DynamicUsage ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+		GPUStorageAllocated = true;
 	}
 	else
 	{
