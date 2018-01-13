@@ -13,6 +13,8 @@ Marcus Cramer
 
 Catastrophically Successful Software
 
+Sander Boelhouwers (https://github.com/ScaredStorm, https://gamejolt.com/@ScaredStorm)
+
 # Shadowlight Engine wiki:
 
 https://github.com/ShadowlightStudios/shadowlight-engine/wiki
