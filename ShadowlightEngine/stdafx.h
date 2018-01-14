@@ -6,8 +6,8 @@
 #include <memory>
 using namespace std;
 
-#define SUBSYSTEM_SDL2
-//#define SUBSYSTEM_GLFW
+//#define SUBSYSTEM_SDL2
+#define SUBSYSTEM_GLFW
 
 #include "GL\glew.h" //glew will be used regardless of wether SDL or GLFW is used to fire up the window and GL context
 #include "Dependencies\openal\al.h"

@@ -22,11 +22,32 @@ bool ShadowlightEngine::InitializeEngine(const char* AppName, int width, int hei
 
 //barebones implementation, this code (ShadowlightEngine::Run) will majorly change when we figure out more how people will be using the engine.
 //this is basically just here so that we can properly run *something* to test/build on.
+//void ShadowlightEngine::Run()
+//{
+//	while (EngineRunning)
+//	{
+//#ifdef SUBSYSTEM_SDL2
+//		while (SDL_PollEvent(&SDLEvent) != 0)
+//		{
+//			if (SDLEvent.type == SDL_QUIT)
+//			{
+//				EngineRunning = false;
+//			}
+//		}
+//#else
+//		
+//#endif
+//
+//		BeginFrame();
+//		EndFrame();
+//	}
+//}
+
 void ShadowlightEngine::Run()
 {
+#ifdef SUBSYSTEM_SDL2
 	while (EngineRunning)
 	{
-#ifdef SUBSYSTEM_SDL2
 		while (SDL_PollEvent(&SDLEvent) != 0)
 		{
 			if (SDLEvent.type == SDL_QUIT)
@@ -34,13 +55,19 @@ void ShadowlightEngine::Run()
 				EngineRunning = false;
 			}
 		}
-#else
-		//glfw update here
-#endif
 
 		BeginFrame();
 		EndFrame();
 	}
+#else
+	while (!glfwWindowShouldClose(pGlfwWindow))
+	{
+		BeginFrame();
+
+
+		EndFrame();
+	}
+#endif
 }
 
 void ShadowlightEngine::BeginFrame()
@@ -54,7 +81,8 @@ void ShadowlightEngine::EndFrame()
 #ifdef SUBSYSTEM_SDL2
 	SDL_GL_SwapWindow(Window);
 #else
-	//glfw swap buffers here
+	glfwSwapBuffers(pGlfwWindow);
+	glfwPollEvents();
 #endif
 }
 
@@ -114,6 +142,34 @@ bool ShadowlightEngine::InitializeGraphicsSDL(const char * Name, int width, int 
 #ifdef SUBSYSTEM_GLFW
 bool ShadowlightEngine::InitializeGraphicsGLFW(const char * Name, int width, int height, bool fullscreen)
 {
+	if (!glfwInit())
+	{
+		return false;
+	}
+	else
+	{
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+
+		pGlfwWindow = glfwCreateWindow(width, height, Name, NULL, NULL);
+		if (!pGlfwWindow)
+		{
+			glfwTerminate();
+			return false;
+		}
+
+		glfwMakeContextCurrent(pGlfwWindow);
+
+		bool glewInitStatus = InitializeGLEW();
+		glfwSwapInterval(1);
+
+		if (!glewInitStatus)
+		{
+			return false;
+		}
+		return true;
+	}
+
 	return false;
 }
 #endif
