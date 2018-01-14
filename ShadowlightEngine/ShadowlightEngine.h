@@ -32,5 +32,7 @@ private:
 
 #ifdef SUBSYSTEM_GLFW
 	bool InitializeGraphicsGLFW(const char* Name, int width, int height, bool fullscreen);
+
+	GLFWwindow* pGlfwWindow;
 #endif
 };

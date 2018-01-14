@@ -28,4 +28,5 @@ using namespace std;
 #endif
 
 #ifdef SUBSYSTEM_GLFW
+#include <GLFW\glfw3.h>
 #endif
