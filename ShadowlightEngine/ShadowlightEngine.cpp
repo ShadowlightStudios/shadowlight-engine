@@ -20,29 +20,6 @@ bool ShadowlightEngine::InitializeEngine(const char* AppName, int width, int hei
 #endif
 }
 
-//barebones implementation, this code (ShadowlightEngine::Run) will majorly change when we figure out more how people will be using the engine.
-//this is basically just here so that we can properly run *something* to test/build on.
-//void ShadowlightEngine::Run()
-//{
-//	while (EngineRunning)
-//	{
-//#ifdef SUBSYSTEM_SDL2
-//		while (SDL_PollEvent(&SDLEvent) != 0)
-//		{
-//			if (SDLEvent.type == SDL_QUIT)
-//			{
-//				EngineRunning = false;
-//			}
-//		}
-//#else
-//		
-//#endif
-//
-//		BeginFrame();
-//		EndFrame();
-//	}
-//}
-
 void ShadowlightEngine::Run()
 {
 #ifdef SUBSYSTEM_SDL2
