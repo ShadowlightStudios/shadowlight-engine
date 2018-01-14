@@ -26,3 +26,6 @@ using namespace std;
 #include <SDL_opengl.h>
 #include <GL\GLU.h>
 #endif
+
+#ifdef SUBSYSTEM_GLFW
+#endif

@@ -7,7 +7,7 @@ public:
 	ShadowlightEngine();
 	~ShadowlightEngine();
 
-	bool InitializeEngine(const char* AppName,int width, int height, bool fullscreen = false);
+	bool InitializeEngine(const char* AppName, int width, int height, bool fullscreen = false);
 
 	void Run();
 private:
@@ -16,10 +16,21 @@ private:
 	uint32_t Fullscreen : 1;
 	uint32_t EngineRunning : 1;
 
+	void BeginFrame();
+	void EndFrame();
+
+
+	bool InitializeGLEW();
+
+#ifdef SUBSYSTEM_SDL2
+	bool InitializeGraphicsSDL(const char* Name, int width, int height, bool fullscreen);
+
 	SDL_Event SDLEvent;
 	SDL_Window* Window;
 	SDL_GLContext GLContext;
+#endif
 
-	void BeginFrame();
-	void EndFrame();
+#ifdef SUBSYSTEM_GLFW
+	bool InitializeGraphicsGLFW(const char* Name, int width, int height, bool fullscreen);
+#endif
 };
